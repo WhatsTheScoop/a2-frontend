@@ -7,3 +7,8 @@ Sept 28 4:00 Later entry"
 Oct 1 3:53pm
 Setup starter project to be pulled from.
 -Spencer
+
+Oct 1st 4:16pm
+Combined work with newly established repository. Work included Css theme addition, creation of header with image, and
+template modification for basic rendering of home page.
+-Francis

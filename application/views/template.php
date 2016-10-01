@@ -5,13 +5,14 @@
 		<title>{pagetitle}</title>
         <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <link rel="stylesheet" type="text/css" href="/assets/css/default.css"/>
+        <link rel="stylesheet" type="text/css" href="../public/assets/css/modern-business.css"/>
+        <link rel="stylesheet" type="text/css" href="../public/assets/css/bootstrap.css"/>
+        
 	</head>
 	<body>
+            {header}  
         <div id="container">
 			{content}
-			<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. 
-				{ci_version}</p>
         </div>
 	</body>
 </html>

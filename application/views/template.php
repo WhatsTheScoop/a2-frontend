@@ -10,9 +10,10 @@
         
 	</head>
 	<body>
-            {header}  
-        <div id="container">
+        {header} 
+            
+            <div class="container">
 			{content}
-        </div>
+            </div>
 	</body>
 </html>

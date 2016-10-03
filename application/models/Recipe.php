@@ -44,7 +44,7 @@ class Recipe extends CI_Model{
 	{
 		// iterate over the data until we find the one we want
 		foreach ($this->data as $recipe){
-			if ($recipe['code'] == $selected)
+			if ($recipe['id'] == $selected)
 				return $recipe;
         }
 		return null;

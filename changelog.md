@@ -19,3 +19,6 @@ Added a receiving controller and view to display name and price of data in the s
 
 Oct 2nd 11:45am
 Added a form column to receiving and Quantity column for a more detailed display. Modified the Receiving controller to allow for the quantity to be fetched from the supply model. Added a submission button for future logging function.
+
+Cot 3rd 7:36
+Added a details view and function for supplies (receiving controller).

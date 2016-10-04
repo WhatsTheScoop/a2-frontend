@@ -25,3 +25,7 @@ Created a recipe model that contains all of the data for the recipes as well as 
 Created a production controller to handle displaying all of the recipes as well as the details for each of the recipes.
 I also created some views that are used to display the recipes, although I have a small issue with routing or the links from the show page, everything works as it should, it will just require some touching up once I figure out how to route and link with views inside folders.
 -Spencer
+
+Oct 3rd 7:36
+Added a details view and function for supplies (receiving controller).
+-Jason

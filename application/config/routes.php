@@ -54,7 +54,8 @@ $route['default_controller'] = 'welcome';
 //nav bar routing
 $route['home'] = 'welcome';
 $route['receiving'] = 'Receiving';
-$route['product'] = 'Product';
+$route['production'] = 'Production';
+//$route['product(:num)'] = 'Production/Show/$1';
 $route['admin'] = 'Admin';
 $route['sales'] = 'Sales';
 

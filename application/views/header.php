@@ -9,19 +9,19 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand " href="home">What's the Scoop</a>
+            <a class="navbar-brand " href="/">What's the Scoop</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="receiving">Receiving</a>
+                    <a href="/receiving">Receiving</a>
                 </li>
                 <li>
                     <a href="sales">Sales</a>
                 </li>
                 <li>
-                    <a href="product">Product</a>
+                    <a href="/production">Product</a>
                 </li>
                 <li>
                     <a href="admin">Admin</a>

@@ -20,5 +20,16 @@ Added a receiving controller and view to display name and price of data in the s
 Oct 2nd 11:45am
 Added a form column to receiving and Quantity column for a more detailed display. Modified the Receiving controller to allow for the quantity to be fetched from the supply model. Added a submission button for future logging function.
 
-Cot 3rd 7:36
+Oct 2nd 5:02pm
+Created a recipe model that contains all of the data for the recipes as well as some methods for accessing.
+Created a production controller to handle displaying all of the recipes as well as the details for each of the recipes.
+I also created some views that are used to display the recipes, although I have a small issue with routing or the links from the show page, everything works as it should, it will just require some touching up once I figure out how to route and link with views inside folders.
+-Spencer
+
+Oct 3rd 7:36
 Added a details view and function for supplies (receiving controller).
+-Jason
+
+Oct 3rd 9:00pm
+Fixed the link issues I was having with the 'show' view for the recipes.
+-Spencer

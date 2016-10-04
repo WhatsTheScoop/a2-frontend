@@ -29,3 +29,7 @@ I also created some views that are used to display the recipes, although I have 
 Oct 3rd 7:36
 Added a details view and function for supplies (receiving controller).
 -Jason
+
+Oct 3rd 9:00pm
+Fixed the link issues I was having with the 'show' view for the recipes.
+-Spencer

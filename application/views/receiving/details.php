@@ -3,7 +3,7 @@
 <!--Still need an action here for form submission-->
 <table class="table" action="">
     <tr>    
-        <th>Product ID</ht>
+        <th>Product ID</th>
         <td><?= $ingredient['id'] ?></td>
     </tr>
     <tr>

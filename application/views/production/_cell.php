@@ -6,7 +6,7 @@
  */
 ?>
 
-<a href="product{id}"
+<a href="production/show/{id}"
    data-title="{code}">
     {code}
 </a>

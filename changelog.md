@@ -33,3 +33,11 @@ Added a details view and function for supplies (receiving controller).
 Oct 3rd 9:00pm
 Fixed the link issues I was having with the 'show' view for the recipes.
 -Spencer
+
+Oct 3rd 9:32pm
+Added Sales controller with index and details function.
+Added Product model; References Recipe model for name and description. 
+Reordered nav bar links. 
+Fixed broken nav bar link (Sales).
+Cleaned up routes files. 
+-Jason

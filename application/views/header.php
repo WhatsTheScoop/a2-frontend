@@ -18,13 +18,13 @@
                     <a href="/receiving">Receiving</a>
                 </li>
                 <li>
-                    <a href="sales">Sales</a>
-                </li>
-                <li>
                     <a href="/production">Product</a>
                 </li>
                 <li>
-                    <a href="admin">Admin</a>
+                    <a href="/sales">Sales</a>
+                </li>
+                <li>
+                    <a href="/admin">Admin</a>
                 </li>
 
 

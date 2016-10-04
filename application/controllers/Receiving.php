@@ -16,15 +16,17 @@ class Receiving extends Application {
 
     public function index(){
         $this->data['header'] = 'header';
-        $this->data['pagebody'] = 'receiving';
+        $this->data['pagebody'] = 'receiving/index';
         
         $this->load->model('supplies');
         $ingredients = $this->supplies->all();
+        ////IGNORING 
         $supplyList = array();
         foreach($ingredients as $ingredient){
             $supplyList[] = array('name'=> $ingredient['name'],'quantity'=> $ingredient['quantity'], 'price'=> $ingredient['price']);
         }
-        $this->data['supplies'] = $supplyList;
+        ////END 
+        $this->data['supplies'] = $ingredients;
         
         $this->render();
     }
@@ -33,6 +35,18 @@ class Receiving extends Application {
         $this->data['header'] = 'header';
         $this->data['pagebody'] = 'welcome_message';
         
+        $this->render();
+    }
+
+    public function details($id) {
+        $this->data['header'] = 'header';
+        $this->data['pagebody'] = 'receiving/details';
+        
+        $this->load->model('supplies');
+        $ingredient = $this->supplies->getByKey('id', $id);
+        // TODO: Should probably put each value separately. 
+        $this->data['ingredient'] = $ingredient;
+
         $this->render();
     }
     

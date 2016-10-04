@@ -29,7 +29,7 @@ class Supplies extends CI_Model{
 		parent::__construct();
 	}
 
-	// retrieve a single quote
+	// retrieve a single ingredient
 	public function get($selected)
 	{
 		// iterate over the data until we find the one we want
@@ -37,6 +37,23 @@ class Supplies extends CI_Model{
 			if ($ingredient['name'] == $selected)
 				return $ingredient;
         }
+		return null;
+	}
+
+	// retrieve a single ingredient 
+	public function getById($id)
+	{
+		foreach ($this->data as $ingredient)
+			if ($ingredient['id'] == $id)
+				return $ingredient; 
+		return null;
+	}
+
+	public function getByKey($key, $target) 
+	{
+		foreach ($this->data as $ingredient)
+			if ($ingredient[$key] == $target)
+				return $ingredient; 
 		return null;
 	}
 

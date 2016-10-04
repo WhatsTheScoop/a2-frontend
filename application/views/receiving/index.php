@@ -1,4 +1,3 @@
-
 <h1> Welcome To Receiving</h1>
 
 <!--Still need an action here for form submission-->
@@ -12,7 +11,9 @@
     <form>
         {supplies}
             <tr>
-                <td>{name}</td>
+                <td>
+                    <a href="receiving/details/{id}">{name}</a> 
+                </td>
                 <td>{price}</td>
                 <td>{quantity}</td>
                 <td><input name={name} type="number" min="0" max="50" step="1"></td>

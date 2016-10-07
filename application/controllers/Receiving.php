@@ -49,5 +49,12 @@ class Receiving extends Application {
 
         $this->render();
     }
+    public function receipt()
+    {
+        $this->data['header'] = 'header';
+        $this->data['pagebody'] = 'receiving/receipt';
+        
+        $this->render();
+    }
     
 }

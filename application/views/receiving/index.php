@@ -8,7 +8,7 @@
         <td><b>Quantity per</b></td>
         <td><b>Ordered</b></td>
     </thead>
-    <form>
+    <form action="receiving/receipt">
         {supplies}
             <tr>
                 <td>

@@ -41,3 +41,9 @@ Reordered nav bar links.
 Fixed broken nav bar link (Sales).
 Cleaned up routes files. 
 -Jason
+
+Oct 6 5:53PM
+Redid recipe model and recipe controller(production) so that the views are consistent and so that we now check the quantity of the items.
+Adjusted the Supplies model as well to now have a new field to keep track of the stock that we have.
+Adjusted some values in sales and in receiving to work with the new changes.
+-Spencer

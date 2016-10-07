@@ -15,7 +15,7 @@
                     <a href="receiving/details/{id}">{name}</a> 
                 </td>
                 <td>{price}</td>
-                <td>{quantity}</td>
+                <td>{perBox}</td>
                 <td><input name={name} type="number" min="0" max="50" step="1"></td>
             </tr>
         {/supplies}

@@ -2,8 +2,8 @@
 
 <!--Still need an action here for form submission-->
 <table class="table" action="">
-    <tr>    
-        <th>Product ID</ht>
+    <tr>     
+        <th>Product ID</th>
         <td>{id}</td>
     </tr>
     <tr>

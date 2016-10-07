@@ -23,7 +23,7 @@ class Receiving extends Application {
         ////IGNORING 
         $supplyList = array();
         foreach($ingredients as $ingredient){
-            $supplyList[] = array('name'=> $ingredient['name'],'quantity'=> $ingredient['quantity'], 'price'=> $ingredient['price']);
+            $supplyList[] = array('name'=> $ingredient['name'],'quantity'=> $ingredient['perBox'], 'price'=> $ingredient['price']);
         }
         ////END 
         $this->data['supplies'] = $ingredients;

@@ -13,20 +13,7 @@ class Production extends Application {
         $this->load->model('Recipe');
         $recipes = $this->Recipe->all();
 
-        foreach($recipes as $recipe)
-        {
-            $cells[] = $this->parser->parse('production/_cell', (array) $recipe, true);
-        }
-
-        $this->load->library('table');
-        $parms = array(
-            'table_open' => '<table class ="recipes">',
-            'cell_start' => '<td class ="onerecipe">'
-        );
-        $this->table->set_template($parms);
-
-        $rows = $this->table->make_columns($cells, 1);
-        $this->data['thetable'] = $this->table->generate($rows);
+        $this->data['recipes'] = $recipes;
         $this->render();
     }
 
@@ -38,13 +25,37 @@ class Production extends Application {
         $recipe = $this->Recipe->get($id);
        // $this->data['recipe'] = $recipe;
 
+        $ingredients = array();
+        
+        foreach($recipe['ingredients'] as $key => $quantity){
+            if($this->checkStock($key,$quantity)){
+                $ingredients[] = array('name' => $this->getName($key), 'quantity' => $quantity, 'oos' => "OUT OF STOCK");
+            }
+            else{
+                $ingredients[] = array('name' => $this->getName($key), 'quantity' => $quantity, 'oos' => false);
+            }
+        }
+        
         $this->data['code'] = $recipe['code'];
         $this->data['description'] = $recipe['description'];
-        $toppings = $recipe['ingredients'];
-        $this->data['cone'] = $toppings['cone'];
-        $this->data['icecream'] = $toppings['icecream'];
-        $this->data['garnish'] = $toppings['garnish'];
+        $this->data['ingredients'] = $ingredients;        
+        
         $this->render();
+    }
+    
+    public function checkStock($key, $quantity){
+        $this->load->model('Supplies');
+        
+        $count = $this->Supplies->getById($key)['onHand'];
+        return $count < $quantity;
+    }
+    
+    public function getName($id){
+        $this->load->model('Supplies');
+        
+        $item = $this->Supplies->getById($id);
+        return $item['name'];
+        
     }
 
 }

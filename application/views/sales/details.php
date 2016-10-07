@@ -31,4 +31,4 @@
         <td>{promotion}</td>
     </tr>
 </table>
-<button onclick="location.href='<?php echo base_url()?>sales'">Return</button>
+<button onclick="location.href='{backUrl}'">Return</button>

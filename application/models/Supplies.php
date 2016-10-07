@@ -24,42 +24,20 @@ class Supplies extends CI_Model{
 	);
 
 	// Constructor
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
 	}
 
-	// retrieve a single ingredient
-	public function get($selected)
-	{
-		// iterate over the data until we find the one we want
-		foreach ($this->data as $ingredient){
-			if ($ingredient['name'] == $selected)
-				return $ingredient;
-        }
-		return null;
-	}
-
 	// retrieve a single ingredient 
-	public function getById($id)
-	{
+	public function get($id) {
 		foreach ($this->data as $ingredient)
 			if ($ingredient['id'] == $id)
 				return $ingredient; 
 		return null;
 	}
 
-	public function getByKey($key, $target) 
-	{
-		foreach ($this->data as $ingredient)
-			if ($ingredient[$key] == $target)
-				return $ingredient; 
-		return null;
-	}
-
 	// retrieve all of the quotes
-	public function all()
-	{
+	public function all() {
 		return $this->data;
 	}
     

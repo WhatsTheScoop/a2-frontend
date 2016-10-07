@@ -22,5 +22,7 @@
     </tr>
     {/ingredients}
 </table>
+<button onclick="location.href='{backUrl}'">Return</button>
+
 
 

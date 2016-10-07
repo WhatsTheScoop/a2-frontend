@@ -22,6 +22,8 @@ class Sales extends Application {
         
         // Load the data 
         $this->load->model('product');
+        $this->load->model('salesLog');
+        //$this->salesLog->add('test');
         $products = $this->product->all();
 
         // Format the data 
@@ -57,6 +59,13 @@ class Sales extends Application {
         $this->data['quantity'] = $product['quantity'];
         $this->data['promotion'] = $product['promotion'] ? "Yes" : "No";    // TODO: Same as above
 
+        $this->render();
+    }
+    public function order()
+    {
+        $this->data['header'] = 'header';
+        $this->data['pagebody'] = 'sales/order';
+        
         $this->render();
     }
     

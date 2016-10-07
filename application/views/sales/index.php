@@ -9,7 +9,7 @@
         <th>Quantity per</th>
         <th>On promotion</th>        
     </thead>
-    <form>
+    <form action="sales/order">
         {products}
             <tr>
                 <td>

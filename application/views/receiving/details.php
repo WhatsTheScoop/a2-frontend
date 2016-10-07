@@ -5,23 +5,27 @@
     <form action="">
         <tr>
             <th>Product ID</th>
-            <td><?= $ingredient['id'] ?></td>
+            <td>{id}</td>
         </tr>
         <tr>
             <th>Name</th>
-            <td><?= $ingredient['name'] ?></td>
+            <td>{name}</td>
         </tr>
         <tr>
             <th>Price</th>
-            <td><?= $ingredient['price'] ?></td>
+            <td>{price}</td>
         </tr>
         <tr>
             <th>Category</th>
-            <td><?= $ingredient['type'] ?></td>
+            <td>{type}</td>
         </tr>
         <tr>
-            <th>Quantity per</th>
-            <td><?= $ingredient['perBox'] ?></td>
+            <th>Per Box</th>
+            <td>{perBox}</td>
+        </tr>
+        <tr>
+            <th>In Stock</th>
+            <td>{onHand}</td>
         </tr>
         <tr>
             <th>Quantity received:</th>
@@ -33,4 +37,4 @@
         </tr>
     </form>
 </table>
-<button onclick="location.href='<?php echo base_url()?>receiving'">Return</button>
+<button onclick="location.href='{backUrl}'">Return</button>

@@ -47,3 +47,9 @@ Redid recipe model and recipe controller(production) so that the views are consi
 Adjusted the Supplies model as well to now have a new field to keep track of the stock that we have.
 Adjusted some values in sales and in receiving to work with the new changes.
 -Spencer
+
+Oct 6 9:25PM
+Made code formatting consistent. 
+Basic route validation (ex. controller/show, controller/show/888, controller/show/asdf)
+Fixed views (Receiving shows onHand, detail/show views can return to index, no view contains PHP)
+-Jason 

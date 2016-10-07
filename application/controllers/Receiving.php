@@ -12,41 +12,53 @@
  * @author Francis Quintal
  */
 class Receiving extends Application {
-    //put your code here
 
-    public function index(){
+    public function index() {
         $this->data['header'] = 'header';
         $this->data['pagebody'] = 'receiving/index';
         
         $this->load->model('supplies');
         $ingredients = $this->supplies->all();
-        ////IGNORING 
+
         $supplyList = array();
         foreach($ingredients as $ingredient){
-            $supplyList[] = array('name'=> $ingredient['name'],'quantity'=> $ingredient['perBox'], 'price'=> $ingredient['price']);
+            $supplyList[] = array(
+                'id' => $ingredient['id'],
+                'name' => $ingredient['name'],
+                'perBox' => $ingredient['perBox'], 
+                'onHand' => $ingredient['onHand'],
+                'price' => $ingredient['price']);
         }
-        ////END 
-        $this->data['supplies'] = $ingredients;
-        
+
+        $this->data['supplies'] = $supplyList;        
         $this->render();
     }
     
-    public function order(){
+    public function order() {
         $this->data['header'] = 'header';
         $this->data['pagebody'] = 'welcome_message';
         
         $this->render();
     }
 
-    public function details($id) {
+    public function details($id = 0) {
+        $this->load->model('supplies');
+        $ingredient = $this->supplies->get($id);
+        
+        if (is_null($ingredient))
+            show_404();
+
         $this->data['header'] = 'header';
         $this->data['pagebody'] = 'receiving/details';
-        
-        $this->load->model('supplies');
-        $ingredient = $this->supplies->getByKey('id', $id);
-        // TODO: Should probably put each value separately. 
-        $this->data['ingredient'] = $ingredient;
 
+        $this->data['id'] = $ingredient['id']; 
+        $this->data['name'] = $ingredient['name']; 
+        $this->data['price'] = $ingredient['price']; 
+        $this->data['type'] = $ingredient['type']; 
+        $this->data['perBox'] = $ingredient['perBox']; 
+        $this->data['onHand'] = $ingredient['onHand'];
+        $this->data['backUrl'] = base_url() . "receiving";
+        
         $this->render();
     }
     public function receipt()

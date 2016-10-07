@@ -22,7 +22,6 @@
 
             </tr>
             {/recipes}
-
         </form>
     </table>
 </div>

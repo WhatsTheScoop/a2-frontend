@@ -25,20 +25,17 @@ class Product extends CI_Model{
 	);
 
 	// Constructor
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
 	}
 
 	// retrieve all products 
-	public function all()
-	{
+	public function all() {
 		return $this->data;
 	}
 
 	// Get a product record via id 
-	public function get($id)
-	{
+	public function get($id) {
 		foreach ($this->data as $p)
 			if ($p['id'] == $id)
 				return $p; 
@@ -46,8 +43,7 @@ class Product extends CI_Model{
 	}
 
 	// Gets the associated recipe of a product
-	public function getRecipe($product) 
-	{
+	public function getRecipe($product) {
 		$this->load->model('recipe');
 		return $this->recipe->get($product['recipeId']);
 	}

@@ -3,10 +3,11 @@
 <!--Still need an action here for form submission-->
 <table class="table" action="">
     <thead>    
-        <td><b>Name</b></td>
-        <td><b>Price</b></td>
-        <td><b>Quantity per</b></td>
-        <td><b>Ordered</b></td>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Per Box</th>
+        <th>In Stock</th>
+        <th>Ordered</th>
     </thead>
     <form>
         {supplies}
@@ -16,10 +17,12 @@
                 </td>
                 <td>{price}</td>
                 <td>{perBox}</td>
+                <td>{onHand}</td>
                 <td><input name={name} type="number" min="0" max="50" step="1"></td>
             </tr>
         {/supplies}
         <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>

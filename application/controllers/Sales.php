@@ -32,7 +32,7 @@ class Sales extends Application {
                 'id'          => $p['id'],
                 'name'        => $this->product->getRecipe($p)['code'],
                 'description' => $this->product->getRecipe($p)['description'],                
-                'price'       => $p['price'],
+                'price'       => "$".number_format($p['price'], 2),
                 'inStock'    => $p['inStock'],
                 'promotion'   => $p['promotion'] ? "Yes" : "No",    // TODO: Not sure if the presenting logic should be here.                
             );
@@ -68,6 +68,7 @@ class Sales extends Application {
     {
         $this->data['header'] = 'header';
         $this->data['pagebody'] = 'sales/order';
+        $this->data['backUrl'] = base_url() . "sales";
         
         $this->render();
     }

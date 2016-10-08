@@ -27,7 +27,7 @@ class Receiving extends Application {
                 'name' => $ingredient['name'],
                 'perBox' => $ingredient['perBox'], 
                 'onHand' => $ingredient['onHand'],
-                'price' => $ingredient['price']);
+                'price' => "$".number_format($ingredient['price'], 2));
         }
 
         $this->data['supplies'] = $supplyList;        
@@ -53,7 +53,7 @@ class Receiving extends Application {
 
         $this->data['id'] = $ingredient['id']; 
         $this->data['name'] = $ingredient['name']; 
-        $this->data['price'] = $ingredient['price']; 
+        $this->data['price'] = "$".number_format($ingredient['price'], 2); 
         $this->data['type'] = $ingredient['type']; 
         $this->data['perBox'] = $ingredient['perBox']; 
         $this->data['onHand'] = $ingredient['onHand'];
@@ -65,6 +65,7 @@ class Receiving extends Application {
     {
         $this->data['header'] = 'header';
         $this->data['pagebody'] = 'receiving/receipt';
+        $this->data['backUrl'] = base_url() . "receiving";
         
         $this->render();
     }

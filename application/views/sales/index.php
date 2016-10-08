@@ -6,7 +6,7 @@
         <th>Name</th>
         <th>Description</th>        
         <th>Price</th>
-        <th>Quantity per</th>
+        <th>In Stock</th>
         <th>On promotion</th>        
     </thead>
     <form action="sales/order">
@@ -17,7 +17,7 @@
                 </td>
                 <td>{description}</td>
                 <td>{price}</td>                
-                <td>{quantity}</td>
+                <td>{inStock}</td>
                 <td>{promotion}</td>                
                 <td><input name={name} type="number" min="0" max="50" step="1"></td>
             </tr>

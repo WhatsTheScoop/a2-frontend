@@ -29,11 +29,11 @@ class Production extends Application {
 
         $ingredients = array();
         
-        foreach($recipe['ingredients'] as $key => $quantity){
-            if ($this->checkStock($key,$quantity)) {
-                $ingredients[] = array('name' => $this->getName($key), 'quantity' => $quantity, 'oos' => "OUT OF STOCK");
+        foreach($recipe['ingredients'] as $key => $inStock){
+            if ($this->checkStock($key,$inStock)) {
+                $ingredients[] = array('name' => $this->getName($key), 'inStock' => $inStock, 'oos' => "OUT OF STOCK");
             } else {
-                $ingredients[] = array('name' => $this->getName($key), 'quantity' => $quantity, 'oos' => "");
+                $ingredients[] = array('name' => $this->getName($key), 'inStock' => $inStock, 'oos' => "");
             }
         }
         
@@ -45,11 +45,11 @@ class Production extends Application {
         $this->render();
     }
     
-    public function checkStock($key, $quantity) {
+    public function checkStock($key, $inStock) {
         $this->load->model('Supplies');
         
         $count = $this->Supplies->get($key)['onHand'];
-        return $count < $quantity;
+        return $count < $inStock;
     }
     
     public function getName($id) {

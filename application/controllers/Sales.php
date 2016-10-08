@@ -33,7 +33,7 @@ class Sales extends Application {
                 'name'        => $this->product->getRecipe($p)['code'],
                 'description' => $this->product->getRecipe($p)['description'],                
                 'price'       => $p['price'],
-                'quantity'    => $p['quantity'],
+                'inStock'    => $p['inStock'],
                 'promotion'   => $p['promotion'] ? "Yes" : "No",    // TODO: Not sure if the presenting logic should be here.                
             );
         }
@@ -58,7 +58,7 @@ class Sales extends Application {
         $this->data['name']     = $recipe['code'];
         $this->data['description'] = $recipe['description'];
         $this->data['price']    = $product['price'];
-        $this->data['quantity'] = $product['quantity'];
+        $this->data['inStock'] = $product['inStock'];
         $this->data['promotion'] = $product['promotion'] ? "Yes" : "No";    // TODO: Same as above
         $this->data['backUrl'] = base_url() . "sales";
         

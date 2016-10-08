@@ -17,7 +17,7 @@
     {ingredients}
     <tr>
         <td>{name}</td>
-        <td>{quantity}</td>
+        <td>{inStock}</td>
         <td style="color:red"><b>{oos}</b></td>
     </tr>
     {/ingredients}

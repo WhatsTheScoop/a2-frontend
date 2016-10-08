@@ -10,4 +10,4 @@ foreach ($_GET as $key => $value) {
 }
 echo "<br>";
 ?>
-<button onclick="location.href='<?php echo base_url()?>receiving'">Return</button>
+<button onclick="location.href='{backUrl}'">Return</button>

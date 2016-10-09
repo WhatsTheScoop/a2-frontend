@@ -46,10 +46,29 @@ Oct 6 5:53PM
 Redid recipe model and recipe controller(production) so that the views are consistent and so that we now check the quantity of the items.
 Adjusted the Supplies model as well to now have a new field to keep track of the stock that we have.
 Adjusted some values in sales and in receiving to work with the new changes.
--Spencer
+-Spencer/Francis/Jason (Worked on this in class collaboratively from Spencer's laptop)
 
 Oct 6 9:25PM
 Made code formatting consistent. 
 Basic route validation (ex. controller/show, controller/show/888, controller/show/asdf)
 Fixed views (Receiving shows onHand, detail/show views can return to index, no view contains PHP)
--Jason 
+-Jason
+
+Oct 8 3:00PM
+Sales Order and Inventory Receipt pages finished,
+welcome page shows values (no logic currently. not necessary for first assignment I dont think),
+changed all Quantity labels to InStock,
+formatted all money values
+-Alex
+
+Oct 8 8:20PM
+Sale Receipt view content is now calculated and generated in the receipt function in Sales controller.
+Added helper method for moneyFormat
+-Jason
+
+Oct 9 12:34AM
+Made things more consistent throughout, changed the names of the detail views to 'show'. Changed the receipt views so
+that they no longer used any PHP, updated the controllers to work with the views. Had to make some changes to the show
+view as well so that it would work with the updated controller functionality. Updated the readme to be relevant to the
+current state of the project.
+-Spencer

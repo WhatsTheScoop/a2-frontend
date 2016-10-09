@@ -41,7 +41,7 @@ class Receiving extends Application {
         $this->render();
     }
 
-    public function details($id = 0) {
+    public function show($id = 0) {
         $this->load->model('supplies');
         $ingredient = $this->supplies->get($id);
         
@@ -49,7 +49,7 @@ class Receiving extends Application {
             show_404();
 
         $this->data['header'] = 'header';
-        $this->data['pagebody'] = 'receiving/details';
+        $this->data['pagebody'] = 'receiving/show';
 
         $this->data['id'] = $ingredient['id']; 
         $this->data['name'] = $ingredient['name']; 
@@ -63,10 +63,33 @@ class Receiving extends Application {
     }
     public function receipt()
     {
+        $this->load->model('supplies');
+
+        $totalOrderCost = 0;
+        $message = "";
+
+        // ... (NULL, TRUE) returns all POST items with XSS filter
+        foreach ($this->input->post(NULL, TRUE) as $id => $quantity) {
+
+            if ($quantity == 0)
+                continue;
+
+            $supplies = $this->supplies->get($id);
+
+            $supplyName = $supplies['name'];
+            $cost = $quantity * $supplies['price'];
+            $totalOrderCost = $totalOrderCost + $cost;
+
+            $formattedCost = moneyFormat($cost);
+            $message = $message . "Ordered and received $quantity boxes of $supplyName(s) for $formattedCost <br>";
+        }
+
         $this->data['header'] = 'header';
         $this->data['pagebody'] = 'receiving/receipt';
+        $this->data['content'] = $message;
+        $this->data['totalCost'] = moneyFormat($totalOrderCost);
         $this->data['backUrl'] = base_url() . "receiving";
-        
+
         $this->render();
     }
     

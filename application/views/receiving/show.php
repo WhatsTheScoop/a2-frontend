@@ -1,8 +1,6 @@
 <h1>Product Details</h1>
-
-<!--Still need an action here for form submission-->
 <table class="table">
-    <form action="">
+    <form action="/receiving/receipt" method="post">
         <tr>
             <th>Product ID</th>
             <td>{id}</td>
@@ -29,7 +27,7 @@
         </tr>
         <tr>
             <th>Quantity received:</th>
-            <td><input name={name} type="number" min="0" max="50" step="1"></td>
+            <td><input name={id} type="number" min="0" max="50" step="1"></td>
         </tr>
         <tr>
             <td></td>

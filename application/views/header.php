@@ -24,7 +24,7 @@
                     <a href="/sales">Sales</a>
                 </li>
                 <li>
-                    <a href="/admin">Admin</a>
+                    <a href="/">Admin</a>
                 </li>
 
 

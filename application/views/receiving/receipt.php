@@ -1,13 +1,8 @@
-<h1>Receiving receipt Details</h1>
-<?php
+<h1>Receiving Receipt Details</h1>
+<p>
+    {content}
+    <h4>Total Cost: {totalCost} <h4>
+</p>
 
-foreach ($_GET as $key => $value) { 
-    if($value > 0)
-    {
-        echo "Recieved " . $value . " " . $key . "<br>";
-    }
-    
-}
-echo "<br>";
-?>
+
 <button onclick="location.href='{backUrl}'">Return</button>

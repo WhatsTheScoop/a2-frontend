@@ -9,17 +9,17 @@
         <th>In Stock</th>
         <th>On promotion</th>        
     </thead>
-    <form action="sales/order">
+    <form action="/sales/receipt" method="post">
         {products}
             <tr>
                 <td>
-                    <a href="sales/details/{id}">{name}</a> 
+                    <a href="sales/show/{id}">{name}</a>
                 </td>
                 <td>{description}</td>
                 <td>{price}</td>                
                 <td>{inStock}</td>
                 <td>{promotion}</td>                
-                <td><input name={name} type="number" min="0" max="50" step="1"></td>
+                <td><input name={id} type="number" min="0" max="50" step="1"></td>
             </tr>
         {/products}
         <tr>

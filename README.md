@@ -1,6 +1,6 @@
 ## Ice Cream Shop Project
 
-Date created: October 8th, 2016
+Date created: October 1th, 2016
     By: Spencer
 Date revised: October 8th, 2016
     By: Spencer

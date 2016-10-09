@@ -9,16 +9,16 @@
         <th>In Stock</th>
         <th>Ordered</th>
     </thead>
-    <form action="receiving/receipt">
+    <form action="receiving/receipt" method="post">
         {supplies}
             <tr>
                 <td>
-                    <a href="receiving/details/{id}">{name}</a> 
+                    <a href="receiving/show/{id}">{name}</a>
                 </td>
                 <td>{price}</td>
                 <td>{perBox}</td>
                 <td>{onHand}</td>
-                <td><input name={name} type="number" min="0" max="50" step="1"></td>
+                <td><input name={id} type="number" min="0" max="50" step="1"></td>
             </tr>
         {/supplies}
         <tr>

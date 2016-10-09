@@ -60,3 +60,15 @@ welcome page shows values (no logic currently. not necessary for first assignmen
 changed all Quantity labels to InStock,
 formatted all money values
 -Alex
+
+Oct 8 8:20PM
+Sale Receipt view content is now calculated and generated in the receipt function in Sales controller.
+Added helper method for moneyFormat
+-Jason
+
+Oct 9 12:34AM
+Made things more consistent throughout, changed the names of the detail views to 'show'. Changed the receipt views so
+that they no longer used any PHP, updated the controllers to work with the views. Had to make some changes to the show
+view as well so that it would work with the updated controller functionality. Updated the readme to be relevant to the
+current state of the project.
+-Spencer

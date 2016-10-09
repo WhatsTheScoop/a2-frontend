@@ -42,7 +42,7 @@ class Sales extends Application {
         $this->render();
     }
     
-    public function details($id = 0) {
+    public function show($id = 0) {
         $this->load->model('product');
         $product = $this->product->get($id);
         $recipe  = $this->product->getRecipe($product);
@@ -51,7 +51,7 @@ class Sales extends Application {
             show_404();
 
         $this->data['header'] = 'header';
-        $this->data['pagebody'] = 'sales/details';
+        $this->data['pagebody'] = 'sales/show';
         
         $this->data['id']       = $product['id'];
         $this->data['recipeId'] = $product['recipeId'];
@@ -67,25 +67,34 @@ class Sales extends Application {
 
     public function receipt()
     {
-        // TODO: No validation, ordering 0 is okay too. 
-        $id = $this->input->post("id");        
-        $orderQuantity = $this->input->post("orderQuantity");
-
         $this->load->model('product');
-        $product = $this->product->get($id);
-        $recipe  = $this->product->getRecipe($product);
 
-        $productName = $recipe['code'];
-        $totalCost = "$" . number_format($orderQuantity * $product['price'], 2);
-        $totalCost = moneyFormat($orderQuantity * $product['price']);
+        $totalOrderCost = 0;
+        $message = "";
 
-        $message = "Ordered $orderQuantity $productName(s) for $totalCost";  
+        // ... (NULL, TRUE) returns all POST items with XSS filter
+        foreach ($this->input->post(NULL, TRUE) as $id => $quantity) {
+
+            if ($quantity == 0)
+                continue;
+
+            $product = $this->product->get($id);
+            $recipe  = $this->product->getRecipe($product);
+
+            $productName = $recipe['code'];
+            $cost = $quantity * $product['price'];
+            $totalOrderCost = $totalOrderCost + $cost;
+
+            $formattedCost = moneyFormat($cost);
+            $message = $message . "Ordered $quantity $productName(s) for $formattedCost <br>";
+        }
 
         $this->data['header'] = 'header';
         $this->data['pagebody'] = 'sales/receipt';
         $this->data['content'] = $message;
+        $this->data['totalCost'] = moneyFormat($totalOrderCost);
         $this->data['backUrl'] = base_url() . "sales";
-        
+
         $this->render();
     }
     

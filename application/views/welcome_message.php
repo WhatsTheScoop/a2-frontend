@@ -1,14 +1,25 @@
-<h1>Welcome to CodeIgniter!</h1>
+<div id="body" class="text-center">
+    <h1>Assignment #1 From Comp 4711</h1>
 
-<div id="body">
-	<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
+    <table class="table">
+    <form action="">
+        <tr>
+            <th>Amount spent purchasing inventory</th>
+            <td>{inventorycost}</td>
+        </tr>
+        <tr>
+            <th>Amount received from sales</th>
+            <td>{salesamount}</td>
+        </tr>
+        <tr>
+            <th>Cost of Sales Ingredients consumed</th>
+            <td>{costofingredientsused}</td>
+        </tr>
 
-	<p>If you would like to edit this page you'll find it located at:</p>
-	<code>application/views/welcome_message.php</code>
-
-	<p>The corresponding controller for this page is found at:</p>
-	<code>application/controllers/Welcome.php</code>
-
-	<p>If you are exploring CodeIgniter for the very first time, you should 
-		start by reading the <a href="http://www.codeigniter.com/user_guide/">User Guide</a>.</p>
+    </form>
+</table>
+    <br>
+    
+        
 </div>
+

@@ -1,20 +1,32 @@
-## CodeIgniter3.1-starter2
+## Ice Cream Shop Project
 
-This project can be used as a starter for a webapp built with CodeIgniter 3.1.
+Date created: October 1th, 2016
+    By: Spencer
+Date revised: October 8th, 2016
+    By: Spencer
 
-This starter builds on [CodeIgniter3.1-starter1](https://github.com/jedi-academy/CodeIgniter3.1-starter1),
-adding a base controller with view templating.
 
-**controllers/Welcome.php** has been modified to set the name of the desired
-view file as a *data* parameter, and to then invoke the inherited *render*
-method to trigger presentation.
+This project is done by Group #11 for Assignment #1 in COMP-4711.
 
-A view template is provided. The CSS has been extracted to an appropriate file
-in the public folder. Styling could be improved by using a CSS framework, like
-Bootstrap.
+Breakdown:
 
-The **application/config/autoload.php** configuration has been modified
-to preload the template parser library and the url helper.
+Models:
+    Our models are broken down for receiving/stock, recipes, sales, and a sales log.
+    Supplies is what deals with our receiving and the stock that we contain on hand.
+    Recipe is what deals with of the items that go into creating each product and so will tie in with the Product(sales)
+    and the Product(sales) models.
+    Product is the model that deals with the selling of each of the 'recipes' and handles the cost and if the item is on
+    promotion or not.
+    SalesLog is used for writing to receipts.
 
-Configure your web server or virtual host so that your project's
-document root maps to this **public** folder inside your project.
+Controllers:
+    Our controllers are broken down similar to our models for receiving, recipes/production, and sales.
+    The Production controller is used to display all of the recipes, as well as the method for showing the specific recipe
+    and checking if there is enough stock to create the item.
+    Receiving is used to handle the data of our stock and for receiving an item and looking them up.
+    Sales is used to sell the recipes and to list a menu of what we have, as well as specific details for each menu item
+    and the cost of everything.
+
+Views:
+    Our views folder has subfolders that are named based off of which controller will be accessing them and the views
+    that are necessary to display the content to the users of the site.

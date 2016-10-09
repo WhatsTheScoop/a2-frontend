@@ -64,10 +64,26 @@ class Sales extends Application {
         
         $this->render();
     }
-    public function order()
+
+    public function receipt()
     {
+        // TODO: No validation, ordering 0 is okay too. 
+        $id = $this->input->post("id");        
+        $orderQuantity = $this->input->post("orderQuantity");
+
+        $this->load->model('product');
+        $product = $this->product->get($id);
+        $recipe  = $this->product->getRecipe($product);
+
+        $productName = $recipe['code'];
+        $totalCost = "$" . number_format($orderQuantity * $product['price'], 2);
+        $totalCost = moneyFormat($orderQuantity * $product['price']);
+
+        $message = "Ordered $orderQuantity $productName(s) for $totalCost";  
+
         $this->data['header'] = 'header';
-        $this->data['pagebody'] = 'sales/order';
+        $this->data['pagebody'] = 'sales/receipt';
+        $this->data['content'] = $message;
         $this->data['backUrl'] = base_url() . "sales";
         
         $this->render();

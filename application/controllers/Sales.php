@@ -21,6 +21,8 @@ class Sales extends Application {
         
         // Load the data 
         $this->load->model('product');
+        $this->load->model('salesLog');
+        //$this->salesLog->add('test');
         $products = $this->product->all();
 
         // Format the data 
@@ -30,8 +32,8 @@ class Sales extends Application {
                 'id'          => $p['id'],
                 'name'        => $this->product->getRecipe($p)['code'],
                 'description' => $this->product->getRecipe($p)['description'],                
-                'price'       => $p['price'],
-                'quantity'    => $p['quantity'],
+                'price'       => "$".number_format($p['price'], 2),
+                'inStock'    => $p['inStock'],
                 'promotion'   => $p['promotion'] ? "Yes" : "No",    // TODO: Not sure if the presenting logic should be here.                
             );
         }
@@ -56,8 +58,16 @@ class Sales extends Application {
         $this->data['name']     = $recipe['code'];
         $this->data['description'] = $recipe['description'];
         $this->data['price']    = $product['price'];
-        $this->data['quantity'] = $product['quantity'];
+        $this->data['inStock'] = $product['inStock'];
         $this->data['promotion'] = $product['promotion'] ? "Yes" : "No";    // TODO: Same as above
+        $this->data['backUrl'] = base_url() . "sales";
+        
+        $this->render();
+    }
+    public function order()
+    {
+        $this->data['header'] = 'header';
+        $this->data['pagebody'] = 'sales/order';
         $this->data['backUrl'] = base_url() . "sales";
         
         $this->render();

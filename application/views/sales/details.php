@@ -23,8 +23,8 @@
         <td>{price}</td>
     </tr>
     <tr>
-        <th>Quantity</th>
-        <td>{quantity}</td>
+        <th>inStock</th>
+        <td>{inStock}</td>
     </tr>
     <tr>
         <th>On Promotion</th>

@@ -9,7 +9,7 @@
         <th>In Stock</th>
         <th>Ordered</th>
     </thead>
-    <form>
+    <form action="receiving/receipt">
         {supplies}
             <tr>
                 <td>

@@ -6,6 +6,16 @@
 
 class Recipe extends CI_Model{
     
+	public static $fields =  ['id','code','description','ingredients'];
+
+    public static $rules = [
+        ['field'=>'id', 		'label'=>'Product ID',	'rules'=>'required|integer'],
+        ['field'=>'recipeId', 	'label'=>'Recipe ID',	'rules'=>'required|integer'],
+        ['field'=>'price', 		'label'=>'Item price',	'rules'=>'required|decimal'],
+        ['field'=>'inStock', 	'label'=>'Stock on hand', 'rules'=>'required|integer|greater_than_equal_to[0]'],
+		['field'=>'promotion',	'label'=>'Promotion',	'rules'=>'integer']
+	];
+
     var $data = array(
 		array('id' => '0',  'code' => 'Child Cone', 'description' => 'One small scoop of vanilla, perfect for a child!',  'ingredients' =>
 			array('1' => 1, '3' => 1)),
@@ -32,6 +42,16 @@ class Recipe extends CI_Model{
         array('id' => '11', 'code' => 'Forgetting Something', 'description' => 'Hmm is something missing?',  'ingredients' => 
 			array('0'=> 1, '9'=>1, '10'=> 1, '11'=>1))
 	);
+
+    // Determines how a record should be displayed
+    public static function createViewModel($record) {
+        $record['id']        = $record['id'];
+        $record['recipeId']  = $record['recipeId'];
+        $record['price']     = moneyFormat($record['price']);
+        $record['inStock']   = $record['inStock'];
+        $record['promotion'] = $record['promotion'] ? "Yes" : "No";    
+        return $record;
+    }
 
 	// Constructor
 	public function __construct()

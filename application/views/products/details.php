@@ -1,5 +1,6 @@
 <h1>{pagetitle}</h1>
 <hr>
+{model}
 <dl class="dl-horizontal">
     <dt>Product ID</dt>
     <dd>{id}</dd>
@@ -15,5 +16,7 @@
 
     <dt>Promotion</dt>
     <dd>{promotion}</dd>
-</dl>        
-<button onclick="location.href='{controller_url}'" class="btn btn-default">Return</button>
+</dl> 
+{/model}       
+<a href="{controller_url}/edit/{model}{id}{/model}" class="btn btn-primary">Edit</a>
+<a href="{controller_url}" class="btn btn-default">Return</a>        

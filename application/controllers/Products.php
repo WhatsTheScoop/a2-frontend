@@ -8,15 +8,6 @@ class Products extends Application {
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
-
-        $this->data['header'] = 'header';        
-        $this->data['base_url'] = base_url();        
-        $this->data['controller_url'] = base_url() . 'products';
-        $this->data['errors'] = "";
-    }
-
-    public function hello() {
-        return "Hello";
     }
 
     // GET: /product/
@@ -24,9 +15,12 @@ class Products extends Application {
         $this->data['pagetitle'] = 'Products';
         $this->data['pagebody'] = 'products/index';
         
-        $this->data['products'] = $this->Product->all();
+        $products = array();
+        foreach ($this->Product->all() as $p)
+            array_push($products, Product::createViewModel($p));
+
+        $this->data['products'] = $products;
         $this->data['backUrl'] = base_url();
-        $this->data['yes'] = FALSE;
         
         $this->render();
     }
@@ -35,24 +29,31 @@ class Products extends Application {
     public function create() {
         $this->data['pagetitle'] = 'Create a Product';
         $this->data['pagebody'] = 'products/create';
-        $this->render();
-    }
 
-    // POST: /product/create_validate
-    public function create_validate() {
-        $record = $this->input->post();
+        // check for form submission
+        if ($this->input->post()) {
+            
+            $record = $this->input->post();
 
-        $this->form_validation->set_rules(Product::$rules);
-        if (!$this->form_validation->run()) {
-            $this->data['pagetitle'] = 'Create a Product';
-            $this->data['pagebody'] = 'products/create';
-            $this->data['errors'] = validation_errors();
-            $this->loadFormData($record);
-            $this->render();
+            // Check if model is valid 
+            $this->form_validation->set_rules(Product::$rules);
+            if (!$this->form_validation->run()) {
+                // Invalid, reload the form and display errors 
+                $this->data['errors'] = validation_errors();
+                $this->data['model'] = array($record);
+                $this->render();
+            } else {
+                // Valid, create and redirect back to index
+                $this->Product->add($record);
+                $this->redirectToIndex();
+            }
+
+        // else, blank slate 
         } else {
-            $this->Product->add($record);
-            redirectToIndex();
+            $this->data['model'] = array($this->Product->create());
+            $this->render();
         }
+
     }
     
     // GET: /product/details/1    
@@ -62,39 +63,51 @@ class Products extends Application {
         
         $product = $this->Product->get($id);
         if ($product == null) {
-            $this->data['pagebody'] = 'errors/html/error_404';
-            $this->data['error_title'] = 'Product not found';
-            $this->data['error_message'] = 'A product with ID ' . $id . ' could not be found.';
-            $this->data['error_return_url'] = base_url() . 'Products';
+            $this->notFound($id);
+            return;
         } else {
-            $this->loadFormData($product);
+            $product = Product::createViewModel($product);
+            $this->data['model'] = array($product);
+            $this->render();                
         }        
-
-        $this->render();        
     }
 
     // GET: /product/edit/1
     public function edit($id) {
         $this->data['pagetitle'] = 'Edit Product';
-        $this->data['pagebody'] = 'products/create';
-        $this->render();
-    }
+        $this->data['pagebody'] = 'products/edit';
 
-    // POST: /product/edit_validate/1
-    public function edit_validate($id) {
-        $record = $this->input->post();
+        // Check if record exists 
+        $product = $this->Product->get($id);
+        if ($product == null) {
+            $this->notFound($id);
+            return; 
+        } 
 
-        $this->form_validation->set_rules(Product::$rules);
-        if (!$this->form_validation->run()) {
-            $this->data['pagetitle'] = 'Edit Product';
-            $this->data['pagebody'] = 'products/edit';
-            $this->data['errors'] = validation_errors();
-            $this->loadFormData($record);
-            $this->render();
+        // Check for form submission 
+        if ($this->input->post()) {
+            
+            $record = $this->input->post();
+
+            // Check if model is valid 
+            $this->form_validation->set_rules(Product::$rules);
+            if (!$this->form_validation->run()) {
+                // Invalid, reload the form and display errors 
+                $this->data['errors'] = validation_errors();
+                $this->data['model'] = array($product);
+                $this->render();
+            } else {
+                // Valid, create and redirect back to index
+                $this->Product->update($record);
+                $this->redirectToIndex();
+            }
+
+        // Else load record data 
         } else {
-            // update
-            redirectToIndex();
-        }
+            $this->data['model'] = array($product);
+            $this->render();        
+        }   
+
     }
 
     // GET: /product/delete/1
@@ -104,55 +117,32 @@ class Products extends Application {
 
         $product = $this->Product->get($id);
         if ($product == null) {
-            $this->data['pagebody'] = 'errors/html/error_404';
-            $this->data['error_title'] = 'Product not found';
-            $this->data['error_message'] = 'A product with ID ' . $id . ' could not be found.';
-            $this->data['error_return_url'] = base_url() . 'Products';
+            $this->notFound($id);
+            return;
         } else {
-            $this->loadFormData($product);
+            $this->data['model'] = array($product);
+            $this->render();
         }      
 
-        $this->render();
     }
 
     // POST: /product/delete_confirmed/1
     public function delete_confirmed($id) {
         $this->Product->delete($id);
+        // check if ok ? 
+        $this->redirectToIndex();
     }
 
 
 
     /* Helpers */
 
-    private function loadFormData($record) {
-        $this->data['id']        = $record['id'];
-        $this->data['recipeId']  = $record['recipeId'];
-        $this->data['price']     = $record['price'];
-        $this->data['inStock']   = $record['inStock'];
-        $this->data['promotion'] = FALSE; //$record['promotion'] ? TRUE : FALSE;        
-        /* Lazy 
-        foreach ($record as $key => $value) {
-            $this->data[$key] = $value;
-        }
-        */
+    private function notFound($id) {
+        $this->data['pagebody'] = 'errors/html/error_404';
+        $this->data['error_title'] = 'Product not found';
+        $this->data['error_message'] = 'A product with ID ' . $id . ' could not be found.';
+        $this->data['error_return_url'] = base_url() . 'Products';
+        $this->render();
     }
 
-    private function getViewModel($record) {
-        $record['id']        = $record['id'];
-        $record['recipeId']  = $record['recipeId'];
-        $record['price']     = moneyFormat($record['price']);
-        $record['inStock']   = $record['inStock'];
-        $record['promotion'] = $record['promotion'] ? "Yes" : "No";       
-    }
-
-    private function redirectToIndex() {
-        redirect('Products');
-    }
-
-/*
-    public function transaction($id) {
-        $this->data['pagebody'] = 'admin/transaction';
-        $this->render();    
-    }
-*/
 }

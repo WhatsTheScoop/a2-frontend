@@ -144,7 +144,7 @@ class CI_Parser {
 		// Process "{if variable} content {/if}" statements
 
 		/* capture_groups: Entire match, variable, content */ 
-		$if_pattern = "/{if\s+(\w+)}\s*(.+?)\s*{\/if}/";
+		$if_pattern = "/{if\s+(\w+)}(.+?){\/if}/s";
 		preg_match_all($if_pattern, $template, $if_results);
 		
 		$num_of_matches = count($if_results[0]); 	// Note: can use any index 0-2

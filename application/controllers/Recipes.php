@@ -34,6 +34,8 @@ class Recipes extends Application {
         if ($this->input->post()) {
             
             $record = $this->input->post();
+            var_dump($record);
+            die();
 
             // Check if model is valid 
             $this->form_validation->set_rules(Recipe::$rules);
@@ -43,7 +45,40 @@ class Recipes extends Application {
                 $this->data['model'] = array($record);
                 $this->render();
             } else {
-                // Valid, create and redirect back to index
+                // ~Valid, continue checking ingredients 
+
+                $ingredientNames = $record['ingredient_name'];
+                $ingredientQuantities = $record['ingredient_quantity'];
+                // Note: The array lengths will always be the same by design  
+
+                for ($i = 0; $i < count($ingredientNames); $i++) {
+                    $name = $ingredientNames[$i];
+                    $quantity = $ingredientQuantities[$i];
+
+                    if (empty($name) || empty($quantity)) {
+                        $this->data['error'] = "Ingredient name and quantity must both be filled out";
+                        $this->data['model'] = array($record);
+                        $this->render();
+                        return;
+                    } 
+                    
+                    $ingredient = $this->Ingredient->getByKey('name', $name);
+
+                    if ($ingredient == null) {
+                        $this->data['error'] = "Ingredient " . $name . " could not be found.";
+                        $this->data['model'] = array($record);
+                        $this->render();
+                        return; 
+                    }
+
+                    // TODO: reformat data for api 
+                    array_push($record['ingredients'], [$ingredient['id'] => $quantity]);
+                    unset($ingredient);
+                }
+                unset($record['ingredient_name']);
+                unset($record['ingredient_quantity']);
+                var_dump($record);
+                die();
                 $this->Recipe->add($record);
                 $this->redirectToIndex();
             }

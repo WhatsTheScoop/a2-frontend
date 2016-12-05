@@ -73,6 +73,18 @@ class Ingredient extends CI_Model{
 		return $this->rest->get('/Ingredients/item/id/' . $id);
     }
 
+    function getByKey($key, $value) {
+        //// DEBUG 
+        foreach (Ingredient::$data as $i) 
+            if (strtolower($i[$key]) == strtolower($value)) 
+                return $i;
+        //// END DEBUG 
+        $all = $this->all();
+        foreach ($all as $i) 
+            if (strtolower($i[$key]) == strtolower($value)) 
+                return $i;
+    }
+
 	// Gets the associated recipe of a ingredient
 	public function getRecipe($ingredient) {
 		$this->load->model('recipe');

@@ -144,7 +144,7 @@ class CI_Parser {
 		// Process "{if variable} content {/if}" statements
 
 		/* capture_groups: Entire match, variable, content */ 
-		$if_pattern = "/{if\s+(\w+)}\s*(.+?)\s*{\/if}/";
+		$if_pattern = "/{if\s+(\w+)}(.+?){\/if}/s";
 		preg_match_all($if_pattern, $template, $if_results);
 		
 		$num_of_matches = count($if_results[0]); 	// Note: can use any index 0-2
@@ -154,8 +154,8 @@ class CI_Parser {
 			$boolean_key = $if_results[1][$i];
 			$content = $if_results[2][$i];
 
-			$value = $data[$boolean_key];			// the actual data value in the controller
-			
+			$value = array_key_exists($boolean_key, $data) && $data[$boolean_key];			// the actual data value in the controller
+
 			if ($value) {	
 				$template = str_replace($string_to_replace, $content, $template);	// strip off the {if} and {/if}
 			} else {

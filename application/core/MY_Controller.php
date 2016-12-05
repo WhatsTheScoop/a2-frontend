@@ -24,6 +24,9 @@ class Application extends CI_Controller
 		//  Set basic view parameters
 		$this->data = array ();
 		$this->data['pagetitle'] = "What's the Scoop";
+		$this->data['header'] = 'header';        
+        $this->data['base_url'] = base_url();        
+        $this->data['controller_url'] = base_url() . get_class($this);
 		$this->data['ci_version'] = (ENVIRONMENT === 'development') ? 'CodeIgniter Version <strong>'.CI_VERSION.'</strong>' : '';
 	}
 
@@ -36,5 +39,12 @@ class Application extends CI_Controller
 		$this->data['content'] = $this->parser->parse($this->data['pagebody'], $this->data, true);
 		$this->parser->parse('template', $this->data);
 	}
+
+	/**
+	 * Convenience method to redirect back to index 
+	 */ 
+    function redirectToIndex() {
+        redirect(get_class($this));
+    }
 
 }

@@ -4,9 +4,9 @@
 {if errors}
 <div class="alert alert-danger">{errors}</div>
 {/if}
-{fake}
-<form action="create_validate" method='POST'>
 
+<form method='POST'>
+    {model}
     <div class="form-group row">
         <div class="col-md-4">
             <label for='id'>Product ID</label>
@@ -44,6 +44,7 @@
             <input type="checkbox" name="promotion" value="{promotion}" class="form-check-input" />
         </div>
     </div>    
+    {/model}
 
     <div>
         <button type="submit" class="btn btn-primary">Create</button>

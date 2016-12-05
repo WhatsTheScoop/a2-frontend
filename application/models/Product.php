@@ -8,8 +8,17 @@
 
 class Product extends CI_Model{
     
-	// Note: I omitted name and description as they can be found in the recipe model. 
-    var $data = array(
+	public static $fields =  ['id','recipeId','price','inStock','promotion'];
+
+    public static $rules = [
+        ['field'=>'id', 		'label'=>'Product ID',	'rules'=>'required|integer'],
+        ['field'=>'recipeId', 	'label'=>'Recipe ID',	'rules'=>'required|integer'],
+        ['field'=>'price', 		'label'=>'Item price',	'rules'=>'required|decimal'],
+        ['field'=>'inStock', 	'label'=>'Stock on hand', 'rules'=>'required|integer|greater_than_equal_to[0]'],
+		['field'=>'promotion',	'label'=>'Promotion',	'rules'=>'integer']
+	];
+
+	public static $data = array(
 		array('id' => '0',  'recipeId' => 0,   'price' => 1.00, 	'inStock' => 60, 	'promotion' => true),
 		array('id' => '1',  'recipeId' => 1,   'price' => 2.00, 	'inStock' => 20, 	'promotion' => true),
         array('id' => '2',  'recipeId' => 2,   'price' => .35, 	'inStock' => 50, 	'promotion' => false),
@@ -24,28 +33,95 @@ class Product extends CI_Model{
         array('id' => '11', 'recipeId' => 11,  'price' => 5, 	'inStock' => 70, 	'promotion' => false),
 	);
 
-	// Constructor
-	public function __construct() {
-		parent::__construct();
-	}
+	// constructor
+    function __construct() {
+        parent::__construct();
+        $this->load->library(['curl', 'format', 'rest']);
+    }
 
-	// retrieve all products 
-	public function all() {
-		return $this->data;
-	}
+    // Return all records as an array of objects
+    function all() {
+		//// DEBUG 
+		return Product::$data;
+		//// END DEBUG 
+		$this->rest->initialize(array('server' => REST_SERVER));
+        $this->rest->option(CURLOPT_PORT, REST_PORT);
+        return $this->rest->get('/Products');
+    }
 
-	// Get a product record via id 
-	public function get($id) {
-		foreach ($this->data as $p)
+    // Retrieve an existing DB record as an object
+    function get($id) {
+		//// DEBUG 
+		foreach (Product::$data as $p)
 			if ($p['id'] == $id)
 				return $p; 
-		return null;
-	}
+		//// END DEBUG 
+		$this->rest->initialize(array('server' => REST_SERVER));
+		$this->rest->option(CURLOPT_PORT, REST_PORT);
+		return $this->rest->get('/Products/item/id/' . $id);
+    }
 
 	// Gets the associated recipe of a product
 	public function getRecipe($product) {
 		$this->load->model('recipe');
 		return $this->recipe->get($product['recipeId']);
 	}
+
+	// Determine if a record exists
+    function exists($id)
+	{
+		$result = $this->get();
+		return !empty($result);
+	}
+
+    // Add a record to the DB
+    function add($record)
+    {
+        ////DEBUG 
+        return;
+        ////END DEBUG 
+		$this->rest->initialize(array('server' => REST_SERVER));
+        $this->rest->option(CURLOPT_PORT, REST_PORT);
+        $retrieved = $this->rest->post('/Products/item/id/' . $record['id'], $record);
+    }
+
+    // Get a blank object.
+    function create()
+    {
+        $object = new StdClass;
+        foreach ($fields as $name)
+            $object->$name = "";
+        return $object;
+    }
+
+    // Update a record in the DB
+    function update($record)
+    {
+		$this->rest->initialize(array('server' => REST_SERVER));
+        $this->rest->option(CURLOPT_PORT, REST_PORT);
+        $retrieved = $this->rest->put('/Products/item/id' . $record['id'], $record);
+    }
+
+	    // Delete a record from the DB
+    function delete($id)
+    {
+        ////DEBUG
+        return;
+        ////END DEBUG 
+		$this->rest->initialize(array('server' => REST_SERVER));
+		$this->rest->option(CURLOPT_PORT, REST_PORT);
+		return $this->rest->delete('/Products/item/id/' . $id);
+    }
+
     
 }   
+/*
+//// NOT USED 
+class ProductModel {
+	var $id; 
+	var $recipeId; 
+	var $price; 
+	var $inStock; 
+	var $promotion;
+}
+*/

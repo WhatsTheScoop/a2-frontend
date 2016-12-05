@@ -44,7 +44,7 @@ class Ingredient extends CI_Model{
         $record['onHand'] = $record['onHand'];
         return $record;
     }
-
+    
 	// constructor
     function __construct() {
         parent::__construct();

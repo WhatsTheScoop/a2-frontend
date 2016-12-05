@@ -34,8 +34,7 @@ class Recipes extends Application {
         if ($this->input->post()) {
             
             $record = $this->input->post();
-            var_dump($record);
-            die();
+            $record['ingredients'] = array();
 
             // Check if model is valid 
             $this->form_validation->set_rules(Recipe::$rules);
@@ -47,38 +46,14 @@ class Recipes extends Application {
             } else {
                 // ~Valid, continue checking ingredients 
 
-                $ingredientNames = $record['ingredient_name'];
-                $ingredientQuantities = $record['ingredient_quantity'];
-                // Note: The array lengths will always be the same by design  
-
-                for ($i = 0; $i < count($ingredientNames); $i++) {
-                    $name = $ingredientNames[$i];
-                    $quantity = $ingredientQuantities[$i];
-
-                    if (empty($name) || empty($quantity)) {
-                        $this->data['error'] = "Ingredient name and quantity must both be filled out";
-                        $this->data['model'] = array($record);
-                        $this->render();
-                        return;
-                    } 
-                    
-                    $ingredient = $this->Ingredient->getByKey('name', $name);
-
-                    if ($ingredient == null) {
-                        $this->data['error'] = "Ingredient " . $name . " could not be found.";
-                        $this->data['model'] = array($record);
-                        $this->render();
-                        return; 
-                    }
-
-                    // TODO: reformat data for api 
-                    array_push($record['ingredients'], [$ingredient['id'] => $quantity]);
-                    unset($ingredient);
+                $errors = checkIngredients($record);
+                if ($errors != null) {
+                    $this->data['errors'] = $errors;
+                    $this->data['model'] = array($record);
+                    $this->render();
                 }
-                unset($record['ingredient_name']);
-                unset($record['ingredient_quantity']);
-                var_dump($record);
-                die();
+
+                // Add to server 
                 $this->Recipe->add($record);
                 $this->redirectToIndex();
             }
@@ -178,6 +153,45 @@ class Recipes extends Application {
         $this->data['error_message'] = 'A Recipe with ID ' . $id . ' could not be found.';
         $this->data['error_return_url'] = base_url() . 'Recipes';
         $this->render();
+    }
+
+    /**
+    * Check if a POST record's ingredients are valid and reformats the 
+    * record (to one that corresponds to Ingredient model) ready for upload. 
+    * If invalid, it'll return a error message.
+    */
+    private function checkIngredients(&$record) {
+        $record['ingredients'] = array();
+
+        $ingredientNames = $record['ingredient_name'];
+        $ingredientQuantities = $record['ingredient_quantity'];
+        // Note: The array lengths will always be the same by design  
+
+        // Check and reformat all ingredients 
+        for ($i = 0; $i < count($ingredientNames); $i++) {
+            $name = $ingredientNames[$i];
+            $quantity = $ingredientQuantities[$i];
+
+            // Check for name and quantity existance 
+            if (empty($name) || empty($quantity)) {
+                return "Ingredient name and quantity must both be filled out";
+            } 
+            
+            $ingredient = $this->Ingredient->getByKey('name', $name);
+
+            // Check for an existing ingredient 
+            if ($ingredient == null) {
+                return "Ingredient " . $name . " could not be found.";
+            }
+
+            // Ingredient OK, reformat into record 
+            array_push($record['ingredients'], array($ingredient['id'] => $quantity));
+            unset($ingredient);
+        }
+        unset($record['ingredient_name']);
+        unset($record['ingredient_quantity']);
+        
+        return null;
     }
 
 }

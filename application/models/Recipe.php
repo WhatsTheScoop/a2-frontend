@@ -6,7 +6,16 @@
 
 class Recipe extends CI_Model{
     
-    var $data = array(
+	public static $fields =  ['id','code','description','ingredients'];
+
+    public static $rules = [
+        ['field'=>'id', 		'label'=>'Recipe ID',	'rules'=>'required|integer'],
+        ['field'=>'code', 		'label'=>'Name',		'rules'=>'required|alpha_numeric_spaces'],
+        ['field'=>'description','label'=>'description',	'rules'=>'required|alpha_numeric_spaces'],
+        ['field'=>'ingredients','label'=>'ingredients', 'rules'=>'']
+	];
+
+    public static $data = array(
 		array('id' => '0',  'code' => 'Child Cone', 'description' => 'One small scoop of vanilla, perfect for a child!',  'ingredients' =>
 			array('1' => 1, '3' => 1)),
 		array('id' => '1',  'code' => 'Large Vanilla', 'description' => 'Two scoops of vanilla goodness.',  'ingredients' =>
@@ -33,27 +42,97 @@ class Recipe extends CI_Model{
 			array('0'=> 1, '9'=>1, '10'=> 1, '11'=>1))
 	);
 
-	// Constructor
-	public function __construct()
-	{
-		parent::__construct();
+    // Determines how a record should be displayed
+    public static function createViewModel($record) {
+        $record['id']        	= $record['id'];
+        $record['code'] 		= ucwords($record['code']);
+        $record['description']  = ucfirst($record['description']);
+        $record['ingredients']  = $record['ingredients'];	// TODO
+        return $record;
+    }
+
+	// constructor
+    function __construct() {
+        parent::__construct();
+        $this->load->library(['curl', 'format', 'rest']);
+    }
+
+    // Return all records as an array of objects
+    function all() {
+		//// DEBUG 
+		return Recipe::$data;
+		//// END DEBUG 
+		$this->rest->initialize(array('server' => REST_SERVER));
+        $this->rest->option(CURLOPT_PORT, REST_PORT);
+        return $this->rest->get('/Recipes');
+    }
+
+    // Retrieve an existing DB record as an object
+    function get($id) {
+		//// DEBUG 
+		foreach (Recipe::$data as $p)
+			if ($p['id'] == $id)
+				return $p; 
+		//// END DEBUG 
+		$this->rest->initialize(array('server' => REST_SERVER));
+		$this->rest->option(CURLOPT_PORT, REST_PORT);
+		return $this->rest->get('/Recipes/item/id/' . $id);
+    }
+
+	// Gets the associated recipe of a recipe
+	public function getRecipe($recipe) {
+		$this->load->model('recipe');
+		return $this->recipe->get($recipe['recipeId']);
 	}
 
-	// retrieve a single recipe
-	public function get($selected)
+	// Determine if a record exists
+    function exists($id)
 	{
-		// iterate over the data until we find the one we want
-		foreach ($this->data as $recipe){
-			if ($recipe['id'] == $selected)
-				return $recipe;
-        }
-		return null;
+		$result = $this->get();
+		return !empty($result);
 	}
 
-	// retrieve all of the recipes
-	public function all()
-	{
-		return $this->data;
-	}
+    // Add a record to the DB
+    function add($record)
+    {
+        ////DEBUG 
+        return;
+        ////END DEBUG 
+		$this->rest->initialize(array('server' => REST_SERVER));
+        $this->rest->option(CURLOPT_PORT, REST_PORT);
+        $retrieved = $this->rest->post('/Recipes/item/id/' . $record['id'], $record);
+    }
+
+    // Get a blank object.
+    function create()
+    {
+        $object = array();
+        foreach (Recipe::$fields as $name)
+            $object[$name] = "";
+        return $object;
+    }
+
+    // Update a record in the DB
+    function update($record)
+    {  
+        ////DEBUG
+        return; 
+        ////END DEBUG 
+		$this->rest->initialize(array('server' => REST_SERVER));
+        $this->rest->option(CURLOPT_PORT, REST_PORT);
+        $retrieved = $this->rest->put('/Recipes/item/id' . $record['id'], $record);
+    }
+
+	    // Delete a record from the DB
+    function delete($id)
+    {
+        ////DEBUG
+        return;
+        ////END DEBUG 
+		$this->rest->initialize(array('server' => REST_SERVER));
+		$this->rest->option(CURLOPT_PORT, REST_PORT);
+		return $this->rest->delete('/Recipes/item/id/' . $id);
+    }
+
     
 }

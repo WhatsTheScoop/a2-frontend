@@ -4,7 +4,7 @@
 {if errors}
 <div class="alert alert-danger">{errors}</div>
 {/if}
-{fake}
+
 <form action="create_validate" method='POST'>
 
     <div class="form-group row">

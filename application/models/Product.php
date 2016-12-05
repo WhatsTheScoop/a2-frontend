@@ -33,6 +33,16 @@ class Product extends CI_Model{
         array('id' => '11', 'recipeId' => 11,  'price' => 5, 	'inStock' => 70, 	'promotion' => false),
 	);
 
+    // Determines how a record should be displayed
+    public static function createViewModel($record) {
+        $record['id']        = $record['id'];
+        $record['recipeId']  = $record['recipeId'];
+        $record['price']     = moneyFormat($record['price']);
+        $record['inStock']   = $record['inStock'];
+        $record['promotion'] = $record['promotion'] ? "Yes" : "No";    
+        return $record;
+    }
+
 	// constructor
     function __construct() {
         parent::__construct();
@@ -96,7 +106,10 @@ class Product extends CI_Model{
 
     // Update a record in the DB
     function update($record)
-    {
+    {  
+        ////DEBUG
+        return; 
+        ////END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
         $retrieved = $this->rest->put('/Products/item/id' . $record['id'], $record);
@@ -113,8 +126,8 @@ class Product extends CI_Model{
 		return $this->rest->delete('/Products/item/id/' . $id);
     }
 
-    
-}   
+}
+   
 /*
 //// NOT USED 
 class ProductModel {

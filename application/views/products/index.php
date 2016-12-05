@@ -9,7 +9,6 @@
         <th>In Stock</th>
         <th>On promotion</th>        
     </thead>
-    {if yes}HELLO{/if}
     {products}
         <tr>
             <td>

@@ -154,8 +154,8 @@ class CI_Parser {
 			$boolean_key = $if_results[1][$i];
 			$content = $if_results[2][$i];
 
-			$value = $data[$boolean_key];			// the actual data value in the controller
-			
+			$value = array_key_exists($boolean_key, $data) && $data[$boolean_key];			// the actual data value in the controller
+
 			if ($value) {	
 				$template = str_replace($string_to_replace, $content, $template);	// strip off the {if} and {/if}
 			} else {

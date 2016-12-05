@@ -12,37 +12,37 @@
             <a class="navbar-brand " href="/">What's the Scoop</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="/receiving">Receiving</a>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Receiving <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/receiving">Index</a>
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                    <a href="/production">Product</a>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Product <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/production">Index</a>
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                    <a href="/sales">Sales</a>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sales <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/sales">Index</a>
+                        </li>
+                    </ul>
                 </li>
+                {if(false)}
                 <li>
                     <a href="/">Admin</a>
                 </li>
-
-
-                <!--Potential for drop down menus Bellow-->
-                <!--                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Production <b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a href="blog-home-1.html">Blog Home 1</a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-home-2.html">Blog Home 2</a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-post.html">Blog Post</a>
-                                            </li>
-                                        </ul>
-                                    </li>-->
+                {/if}
             </ul>
         </div>
         <!-- /.navbar-collapse -->

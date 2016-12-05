@@ -28,6 +28,9 @@
                         <li>
                             <a href="/production">Index</a>
                         </li>
+                        <li>
+                            <a href="/production/create">Create</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -38,11 +41,10 @@
                         </li>
                     </ul>
                 </li>
-                {if(false)}
                 <li>
-                    <a href="/">Admin</a>
+                    <a href="/admin">Admin</a>
                 </li>
-                {/if}
+                
             </ul>
         </div>
         <!-- /.navbar-collapse -->

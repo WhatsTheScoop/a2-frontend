@@ -8,10 +8,6 @@ class Products extends Application {
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
-
-        $this->data['header'] = 'header';        
-        $this->data['base_url'] = base_url();        
-        $this->data['controller_url'] = base_url() . 'products';
     }
 
     // GET: /product/
@@ -33,24 +29,31 @@ class Products extends Application {
     public function create() {
         $this->data['pagetitle'] = 'Create a Product';
         $this->data['pagebody'] = 'products/create';
-        $this->render();
-    }
 
-    // POST: /product/create_validate
-    public function create_validate() {
-        $record = $this->input->post();
+        // check for form submission
+        if ($this->input->post()) {
+            
+            $record = $this->input->post();
 
-        $this->form_validation->set_rules(Product::$rules);
-        if (!$this->form_validation->run()) {
-            $this->data['pagetitle'] = 'Create a Product';
-            $this->data['pagebody'] = 'products/create';
-            $this->data['errors'] = validation_errors();
-            $this->loadDataWithRecord($record);
-            $this->render();
+            // Check if model is valid 
+            $this->form_validation->set_rules(Product::$rules);
+            if (!$this->form_validation->run()) {
+                // Invalid, reload the form and display errors 
+                $this->data['errors'] = validation_errors();
+                $this->data['model'] = array($record);
+                $this->render();
+            } else {
+                // Valid, create and redirect back to index
+                $this->Product->add($record);
+                $this->redirectToIndex();
+            }
+
+        // else, blank slate 
         } else {
-            $this->Product->add($record);
-            redirectToIndex();
+            $this->data['model'] = array($this->Product->create());
+            $this->render();
         }
+
     }
     
     // GET: /product/details/1    
@@ -63,8 +66,8 @@ class Products extends Application {
             $this->notFound($id);
             return;
         } else {
-            $product = Product::createViewModel($product);        
-            $this->loadDataWithRecord($product);
+            $product = Product::createViewModel($product);
+            $this->data['model'] = array($product);
             $this->render();                
         }        
     }
@@ -74,32 +77,37 @@ class Products extends Application {
         $this->data['pagetitle'] = 'Edit Product';
         $this->data['pagebody'] = 'products/edit';
 
+        // Check if record exists 
         $product = $this->Product->get($id);
         if ($product == null) {
             $this->notFound($id);
             return; 
+        } 
+
+        // Check for form submission 
+        if ($this->input->post()) {
+            
+            $record = $this->input->post();
+
+            // Check if model is valid 
+            $this->form_validation->set_rules(Product::$rules);
+            if (!$this->form_validation->run()) {
+                // Invalid, reload the form and display errors 
+                $this->data['errors'] = validation_errors();
+                $this->data['model'] = array($product);
+                $this->render();
+            } else {
+                // Valid, create and redirect back to index
+                $this->Product->update($record);
+                $this->redirectToIndex();
+            }
+
+        // Else load record data 
         } else {
-            $this->loadDataWithRecord($product);
+            $this->data['model'] = array($product);
             $this->render();        
         }   
 
-    }
-
-    // POST: /product/edit_validate/1
-    public function edit_validate($id) {
-        $record = $this->input->post();
-
-        $this->form_validation->set_rules(Product::$rules);
-        if (!$this->form_validation->run()) {
-            $this->data['pagetitle'] = 'Edit Product';
-            $this->data['pagebody'] = 'products/edit';
-            $this->data['errors'] = validation_errors();
-            $this->loadDataWithRecord($record);
-            $this->render();
-        } else {
-            // update
-            redirectToIndex();
-        }
     }
 
     // GET: /product/delete/1
@@ -112,7 +120,7 @@ class Products extends Application {
             $this->notFound($id);
             return;
         } else {
-            $this->loadDataWithRecord($product);
+            $this->data['model'] = array($product);
             $this->render();
         }      
 
@@ -121,24 +129,13 @@ class Products extends Application {
     // POST: /product/delete_confirmed/1
     public function delete_confirmed($id) {
         $this->Product->delete($id);
+        // check if ok ? 
+        $this->redirectToIndex();
     }
 
 
 
     /* Helpers */
-
-    private function loadDataWithRecord($record) {
-        $this->data['id']        = $record['id'];
-        $this->data['recipeId']  = $record['recipeId'];
-        $this->data['price']     = $record['price'];
-        $this->data['inStock']   = $record['inStock'];
-        $this->data['promotion'] = array_key_exists('promotion', $record) and $record['promotion'];        
-        /* Lazy 
-        foreach ($record as $key => $value) {
-            $this->data[$key] = $value;
-        }
-        */
-    }
 
     private function notFound($id) {
         $this->data['pagebody'] = 'errors/html/error_404';
@@ -148,14 +145,4 @@ class Products extends Application {
         $this->render();
     }
 
-    private function redirectToIndex() {
-        redirect('Products');
-    }
-
-/*
-    public function transaction($id) {
-        $this->data['pagebody'] = 'admin/transaction';
-        $this->render();    
-    }
-*/
 }

@@ -1,6 +1,7 @@
 <h1>{pagetitle}</h1>
 <h3>Are you sure you want to delete this?</h3>
 <hr>
+{model}
 <dl class="dl-horizontal">
     <dt>Product ID</dt>
     <dd>{id}</dd>
@@ -17,5 +18,6 @@
     <dt>Promotion</dt>
     <dd>{promotion}</dd>
 </dl>  
-<button onclick="location.href='{controller_url}/delete_confirmed/{id}'" class="btn btn-danger">Delete</button>
-<button onclick="location.href='{controller_url}'" class="btn btn-default">Return</button>
+{/model}
+<a href="{controller_url}/delete_confirmed/{model}{id}{/model}" class="btn btn-danger">Delete</a>
+<a href="{controller_url}" class="btn btn-default">Return</a>       

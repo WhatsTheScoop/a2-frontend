@@ -98,9 +98,9 @@ class Product extends CI_Model{
     // Get a blank object.
     function create()
     {
-        $object = new StdClass;
-        foreach ($fields as $name)
-            $object->$name = "";
+        $object = array();
+        foreach (Product::$fields as $name)
+            $object[$name] = "";
         return $object;
     }
 

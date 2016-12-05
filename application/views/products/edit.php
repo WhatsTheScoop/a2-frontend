@@ -5,8 +5,8 @@
 <div class="alert alert-danger">{errors}</div>
 {/if}
 
-<form action="edit_validate" method='POST'>
-
+<form action="{model}{id}{/model}" method='POST'>
+    {model}
     <div class="form-group row">
         <div class="col-md-4">
             <label for='id'>Product ID</label>
@@ -44,10 +44,11 @@
             <input type="checkbox" name="promotion" value="{promotion}" class="form-check-input" />
         </div>
     </div>    
+    {/model}
 
     <div>
         <button type="submit" class="btn btn-primary">Update</button>
-        <button type="button" onclick="location.href='{controller_url}'" class="btn btn-default">Return</button>    
+        <a href="{controller_url}" class="btn btn-default">Return</a>        
     </div>
 
 </form>

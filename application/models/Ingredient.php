@@ -11,15 +11,15 @@ class Ingredient extends CI_Model{
 	public static $fields =  ['id','name','price','type','perBox','onHand'];
 
     public static $rules = [
-        ['field'=>'id', 		'label'=>'Product ID',	'rules'=>'required|integer'],
-        ['field'=>'name', 	'label'=>'Recipe ID',	'rules'=>'required|integer'],
-        ['field'=>'price', 		'label'=>'Item price',	'rules'=>'required|decimal'],
-        ['field'=>'type', 	'label'=>'Stock on hand', 'rules'=>'required|integer|greater_than_equal_to[0]'],
-		['field'=>'perBox',	'label'=>'Promotion',	'rules'=>'integer'],
-        ['field'=>'onHand']
+        ['field'=>'id',     'label'=>'Ingredient ID',   'rules'=>'required|integer'],
+        ['field'=>'name', 	'label'=>'Name',	        'rules'=>'required|alpha_numeric_spaces'],
+        ['field'=>'price', 	'label'=>'Price',	        'rules'=>'required|decimal'],
+        ['field'=>'type', 	'label'=>'Type',            'rules'=>'required|alpha'],
+		['field'=>'perBox',	'label'=>'# per Box',       'rules'=>'required|integer|greater_than[0]'],
+        ['field'=>'onHand', 'label'=>'On Hand',         'rules'=> 'required|integer|greater_than_equal_to[0]']
 	];
 
-    var $data = array(
+    public static $data = array(
 		array('id' => '0',  'name' => 'Waffle Cone',    'price' => 50,  'type' => 'container',  'perBox' => 60, 'onHand' => 10),
 		array('id' => '1',  'name' => 'Regular Cone',   'price' => 25,  'type' => 'container',  'perBox' => 60, 'onHand' => 10),
         array('id' => '2',  'name' => 'Plastic Cup',    'price' => 15,  'type' => 'container',  'perBox' => 50, 'onHand' => 10),
@@ -36,11 +36,12 @@ class Ingredient extends CI_Model{
 
     // Determines how a record should be displayed
     public static function createViewModel($record) {
-        $record['id']        = $record['id'];
-        $record['recipeId']  = $record['recipeId'];
-        $record['price']     = moneyFormat($record['price']);
-        $record['inStock']   = $record['inStock'];
-        $record['promotion'] = $record['promotion'] ? "Yes" : "No";    
+        $record['id']     = $record['id'];
+        $record['name']   = ucwords($record['name']);
+        $record['price']  = moneyFormat($record['price']);
+        $record['type']   = ucwords($record['type']);
+        $record['perBox'] = $record['perBox'];
+        $record['onHand'] = $record['onHand'];
         return $record;
     }
 
@@ -53,29 +54,29 @@ class Ingredient extends CI_Model{
     // Return all records as an array of objects
     function all() {
 		//// DEBUG 
-		return Product::$data;
+		return Ingredient::$data;
 		//// END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        return $this->rest->get('/Products');
+        return $this->rest->get('/Ingredients');
     }
 
     // Retrieve an existing DB record as an object
     function get($id) {
 		//// DEBUG 
-		foreach (Product::$data as $p)
+		foreach (Ingredient::$data as $p)
 			if ($p['id'] == $id)
 				return $p; 
 		//// END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
 		$this->rest->option(CURLOPT_PORT, REST_PORT);
-		return $this->rest->get('/Products/item/id/' . $id);
+		return $this->rest->get('/Ingredients/item/id/' . $id);
     }
 
-	// Gets the associated recipe of a product
-	public function getRecipe($product) {
+	// Gets the associated recipe of a ingredient
+	public function getRecipe($ingredient) {
 		$this->load->model('recipe');
-		return $this->recipe->get($product['recipeId']);
+		return $this->recipe->get($ingredient['recipeId']);
 	}
 
 	// Determine if a record exists
@@ -93,14 +94,14 @@ class Ingredient extends CI_Model{
         ////END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        $retrieved = $this->rest->post('/Products/item/id/' . $record['id'], $record);
+        $retrieved = $this->rest->post('/Ingredients/item/id/' . $record['id'], $record);
     }
 
     // Get a blank object.
     function create()
     {
         $object = array();
-        foreach (Product::$fields as $name)
+        foreach (Ingredient::$fields as $name)
             $object[$name] = "";
         return $object;
     }
@@ -113,7 +114,7 @@ class Ingredient extends CI_Model{
         ////END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        $retrieved = $this->rest->put('/Products/item/id' . $record['id'], $record);
+        $retrieved = $this->rest->put('/Ingredients/item/id' . $record['id'], $record);
     }
 
 	    // Delete a record from the DB
@@ -124,18 +125,7 @@ class Ingredient extends CI_Model{
         ////END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
 		$this->rest->option(CURLOPT_PORT, REST_PORT);
-		return $this->rest->delete('/Products/item/id/' . $id);
+		return $this->rest->delete('/Ingredients/item/id/' . $id);
     }
 
 }
-   
-/*
-//// NOT USED 
-class ProductModel {
-	var $id; 
-	var $recipeId; 
-	var $price; 
-	var $inStock; 
-	var $promotion;
-}
-*/

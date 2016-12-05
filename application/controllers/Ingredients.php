@@ -3,32 +3,32 @@
  * @author: Jason Cheung
  * Date: Dec 3, 2016
  */
-class Products extends Application {
+class Ingredients extends Application {
 
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
     }
 
-    // GET: /product/
+    // GET: /ingredient/
     public function index() {
-        $this->data['pagetitle'] = 'Products';
-        $this->data['pagebody'] = 'products/index';
+        $this->data['pagetitle'] = 'Ingredients';
+        $this->data['pagebody'] = 'ingredients/index';
         
-        $products = array();
-        foreach ($this->Product->all() as $p)
-            array_push($products, Product::createViewModel($p));
+        $ingredients = array();
+        foreach ($this->Ingredient->all() as $p)
+            array_push($ingredients, Ingredient::createViewModel($p));
 
-        $this->data['products'] = $products;
+        $this->data['models'] = $ingredients;
         $this->data['backUrl'] = base_url();
         
         $this->render();
     }
 
-    // GET: /product/create
+    // GET: /ingredient/create
     public function create() {
-        $this->data['pagetitle'] = 'Create a Product';
-        $this->data['pagebody'] = 'products/create';
+        $this->data['pagetitle'] = 'Create a Ingredient';
+        $this->data['pagebody'] = 'ingredients/create';
 
         // check for form submission
         if ($this->input->post()) {
@@ -36,7 +36,7 @@ class Products extends Application {
             $record = $this->input->post();
 
             // Check if model is valid 
-            $this->form_validation->set_rules(Product::$rules);
+            $this->form_validation->set_rules(Ingredient::$rules);
             if (!$this->form_validation->run()) {
                 // Invalid, reload the form and display errors 
                 $this->data['errors'] = validation_errors();
@@ -44,42 +44,42 @@ class Products extends Application {
                 $this->render();
             } else {
                 // Valid, create and redirect back to index
-                $this->Product->add($record);
+                $this->Ingredient->add($record);
                 $this->redirectToIndex();
             }
 
         // else, blank slate 
         } else {
-            $this->data['model'] = array($this->Product->create());
+            $this->data['model'] = array($this->Ingredient->create());
             $this->render();
         }
 
     }
     
-    // GET: /product/details/1    
+    // GET: /ingredient/details/1    
     public function details($id) {
-        $this->data['pagetitle'] = 'Product Details';
-        $this->data['pagebody'] = 'products/details';
+        $this->data['pagetitle'] = 'Ingredient Details';
+        $this->data['pagebody'] = 'ingredients/details';
         
-        $product = $this->Product->get($id);
-        if ($product == null) {
+        $ingredient = $this->Ingredient->get($id);
+        if ($ingredient == null) {
             $this->notFound($id);
             return;
         } else {
-            $product = Product::createViewModel($product);
-            $this->data['model'] = array($product);
+            $ingredient = Ingredient::createViewModel($ingredient);
+            $this->data['model'] = array($ingredient);
             $this->render();                
         }        
     }
 
-    // GET: /product/edit/1
+    // GET: /ingredient/edit/1
     public function edit($id) {
-        $this->data['pagetitle'] = 'Edit Product';
-        $this->data['pagebody'] = 'products/edit';
+        $this->data['pagetitle'] = 'Edit Ingredient';
+        $this->data['pagebody'] = 'ingredients/edit';
 
         // Check if record exists 
-        $product = $this->Product->get($id);
-        if ($product == null) {
+        $ingredient = $this->Ingredient->get($id);
+        if ($ingredient == null) {
             $this->notFound($id);
             return; 
         } 
@@ -90,45 +90,45 @@ class Products extends Application {
             $record = $this->input->post();
 
             // Check if model is valid 
-            $this->form_validation->set_rules(Product::$rules);
+            $this->form_validation->set_rules(Ingredient::$rules);
             if (!$this->form_validation->run()) {
                 // Invalid, reload the form and display errors 
                 $this->data['errors'] = validation_errors();
-                $this->data['model'] = array($product);
+                $this->data['model'] = array($ingredient);
                 $this->render();
             } else {
                 // Valid, create and redirect back to index
-                $this->Product->update($record);
+                $this->Ingredient->update($record);
                 $this->redirectToIndex();
             }
 
         // Else load record data 
         } else {
-            $this->data['model'] = array($product);
+            $this->data['model'] = array($ingredient);
             $this->render();        
         }   
 
     }
 
-    // GET: /product/delete/1
+    // GET: /ingredient/delete/1
     public function delete($id) {
-        $this->data['pagetitle'] = 'Delete Product';
-        $this->data['pagebody'] = 'products/delete';
+        $this->data['pagetitle'] = 'Delete Ingredient';
+        $this->data['pagebody'] = 'ingredients/delete';
 
-        $product = $this->Product->get($id);
-        if ($product == null) {
+        $ingredient = $this->Ingredient->get($id);
+        if ($ingredient == null) {
             $this->notFound($id);
             return;
         } else {
-            $this->data['model'] = array($product);
+            $this->data['model'] = array($ingredient);
             $this->render();
         }      
 
     }
 
-    // POST: /product/delete_confirmed/1
+    // POST: /ingredient/delete_confirmed/1
     public function delete_confirmed($id) {
-        $this->Product->delete($id);
+        $this->Ingredient->delete($id);
         // check if ok ? 
         $this->redirectToIndex();
     }
@@ -139,9 +139,9 @@ class Products extends Application {
 
     private function notFound($id) {
         $this->data['pagebody'] = 'errors/html/error_404';
-        $this->data['error_title'] = 'Product not found';
-        $this->data['error_message'] = 'A product with ID ' . $id . ' could not be found.';
-        $this->data['error_return_url'] = base_url() . 'Products';
+        $this->data['error_title'] = 'Ingredient not found';
+        $this->data['error_message'] = 'A ingredient with ID ' . $id . ' could not be found.';
+        $this->data['error_return_url'] = base_url() . 'Ingredients';
         $this->render();
     }
 

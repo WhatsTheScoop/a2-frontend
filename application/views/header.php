@@ -28,9 +28,6 @@
                         <li>
                             <a href="/production">Index</a>
                         </li>
-                        <li>
-                            <a href="/production/create">Create</a>
-                        </li>
                     </ul>
                 </li>
                 <li class="dropdown">

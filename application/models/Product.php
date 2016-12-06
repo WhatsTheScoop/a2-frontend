@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-class Product extends CI_Model{
+class Product extends MY_Model {
     
 	public static $fields =  ['id','recipeId','price','inStock','promotion'];
 
@@ -19,16 +19,16 @@ class Product extends CI_Model{
 	];
 
 	public static $data = array(
-		array('id' => '0',  'recipeId' => 0,   'price' => 1.00, 	'inStock' => 60, 	'promotion' => true),
-		array('id' => '1',  'recipeId' => 1,   'price' => 2.00, 	'inStock' => 20, 	'promotion' => true),
+		array('id' => '0',  'recipeId' => 0,   'price' => 1.00, 'inStock' => 60, 	'promotion' => true),
+		array('id' => '1',  'recipeId' => 1,   'price' => 2.00, 'inStock' => 20, 	'promotion' => true),
         array('id' => '2',  'recipeId' => 2,   'price' => .35, 	'inStock' => 50, 	'promotion' => false),
         array('id' => '3',  'recipeId' => 3,   'price' => .80, 	'inStock' => 10, 	'promotion' => false),
-        array('id' => '4',  'recipeId' => 4,   'price' => .500, 	'inStock' => 0, 	'promotion' => false),
+        array('id' => '4',  'recipeId' => 4,   'price' => .500, 'inStock' => 0, 	'promotion' => false),
         array('id' => '5',  'recipeId' => 5,   'price' => .50, 	'inStock' => 30, 	'promotion' => false),
         array('id' => '6',  'recipeId' => 6,   'price' => .20, 	'inStock' => 100,	'promotion' => true),
         array('id' => '7',  'recipeId' => 7,   'price' => .60, 	'inStock' => 8,   	'promotion' => false),
-        array('id' => '8',  'recipeId' => 8,   'price' => 1.20, 	'inStock' => 30, 	'promotion' => false),
-        array('id' => '9',  'recipeId' => 9,   'price' => 30.00,	'inStock' => 50, 	'promotion' => true),
+        array('id' => '8',  'recipeId' => 8,   'price' => 1.20, 'inStock' => 30, 	'promotion' => false),
+        array('id' => '9',  'recipeId' => 9,   'price' => 30.00,'inStock' => 50, 	'promotion' => true),
         array('id' => '10', 'recipeId' => 10,  'price' => 10, 	'inStock' => 60, 	'promotion' => true),
         array('id' => '11', 'recipeId' => 11,  'price' => 5, 	'inStock' => 70, 	'promotion' => false),
 	);
@@ -46,17 +46,70 @@ class Product extends CI_Model{
 	// constructor
     function __construct() {
         parent::__construct();
-        $this->load->library(['curl', 'format', 'rest']);
     }
+
+    // TODO: Not sure if this is handled in the controller  
+    function produce($product, $quantity) {
+        $recipe = $this->getRecipe($product);
+
+        // check for enough ingredients 
+        foreach ($recipe['ingredients'] as $ingredient_id => $quantityRequired) {
+            if ($quantityRequired * $quantity> $this->Supplies->getOnHand($ingredient['id'])) {
+                return "Not enough ingredients.";   // TODO: More sophisticated error message (requires getting the entire ingredient.)
+            }
+        }
+
+        // take the ingredients from the back-end (warehouse)
+        foreach ($recipe['ingredients'] as $ingredient_id => $quantityRequired) {
+            if ($quantityRequired > $this->Supplies->getOnHand($ingredient['id'])) {
+                $this->Supplies->consume($ingredient_id, $quantityRequired * $quantity);
+            }
+        }
+
+        // add to produced quantity to stock  
+        $product['inStock'] = $product['inStock'] + $product;
+        $this->update($product);
+    }
+
+    function sell($product, $quantity) {
+        $product['inStock'] = $product['inStock'] - $product; 
+        if ($product['inStock'] < 0) {
+            return "Error: You don't have enough " . $product['name'] . " in stock.";
+        }
+        $this->update($product);
+    }
+
+	// Determine if a record exists
+    function exists($id) {
+		$result = $this->get($id);
+		return !empty($result);
+	}
+
+    // Convenience method for adding to stock 
+    function addToStock($id, $quantity) {
+        $record = $this->get($id);
+        $record['inStock'] = $record['inStock'] + $quantity;
+        $this->update($record);
+    }
+
+    // Convenience method for removing from stock 
+    function removeFromStock($id, $quantity) {
+        $record = $this->get($id);
+        $record['inStock'] = $record['inStock'] - $quantity;
+
+        if ($record['inStock'] < 0)
+            return "There's not enough " . $record['name'] . "!";
+
+        $this->update($record);
+    }
+
+/// SECTION: CRUD
 
     // Return all records as an array of objects
     function all() {
 		//// DEBUG 
 		return Product::$data;
 		//// END DEBUG 
-		$this->rest->initialize(array('server' => REST_SERVER));
-        $this->rest->option(CURLOPT_PORT, REST_PORT);
-        return $this->rest->get('/Products');
     }
 
     // Retrieve an existing DB record as an object
@@ -66,22 +119,12 @@ class Product extends CI_Model{
 			if ($p['id'] == $id)
 				return $p; 
 		//// END DEBUG 
-		$this->rest->initialize(array('server' => REST_SERVER));
-		$this->rest->option(CURLOPT_PORT, REST_PORT);
-		return $this->rest->get('/Products/item/id/' . $id);
     }
 
-	// Gets the associated recipe of a product
+    // Gets the associated recipe of a product
 	public function getRecipe($product) {
-		$this->load->model('recipe');
-		return $this->recipe->get($product['recipeId']);
-	}
-
-	// Determine if a record exists
-    function exists($id)
-	{
-		$result = $this->get();
-		return !empty($result);
+		$this->load->model('recipe');        
+		return $this->Recipe->get($product['recipeId']);
 	}
 
     // Add a record to the DB
@@ -90,9 +133,6 @@ class Product extends CI_Model{
         ////DEBUG 
         return;
         ////END DEBUG 
-		$this->rest->initialize(array('server' => REST_SERVER));
-        $this->rest->option(CURLOPT_PORT, REST_PORT);
-        $retrieved = $this->rest->post('/Products/item/id/' . $record['id'], $record);
     }
 
     // Get a blank object.
@@ -110,9 +150,6 @@ class Product extends CI_Model{
         ////DEBUG
         return; 
         ////END DEBUG 
-		$this->rest->initialize(array('server' => REST_SERVER));
-        $this->rest->option(CURLOPT_PORT, REST_PORT);
-        $retrieved = $this->rest->put('/Products/item/id' . $record['id'], $record);
     }
 
 	    // Delete a record from the DB
@@ -121,20 +158,8 @@ class Product extends CI_Model{
         ////DEBUG
         return;
         ////END DEBUG 
-		$this->rest->initialize(array('server' => REST_SERVER));
-		$this->rest->option(CURLOPT_PORT, REST_PORT);
-		return $this->rest->delete('/Products/item/id/' . $id);
     }
 
+/// end section: CRUD  
+
 }
-   
-/*
-//// NOT USED 
-class ProductModel {
-	var $id; 
-	var $recipeId; 
-	var $price; 
-	var $inStock; 
-	var $promotion;
-}
-*/

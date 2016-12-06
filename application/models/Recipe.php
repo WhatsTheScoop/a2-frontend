@@ -4,7 +4,7 @@
  * @author Spencer
  * */
 
-class Recipe extends CI_Model{
+class Recipe extends MY_Model {
     
 	public static $fields =  ['id','code','description','ingredients'];
 
@@ -54,7 +54,6 @@ class Recipe extends CI_Model{
 	// constructor
     function __construct() {
         parent::__construct();
-        $this->load->library(['curl', 'format', 'rest']);
     }
 
     // Return all records as an array of objects
@@ -62,9 +61,6 @@ class Recipe extends CI_Model{
 		//// DEBUG 
 		return Recipe::$data;
 		//// END DEBUG 
-		$this->rest->initialize(array('server' => REST_SERVER));
-        $this->rest->option(CURLOPT_PORT, REST_PORT);
-        return $this->rest->get('/Recipes');
     }
 
     // Retrieve an existing DB record as an object
@@ -74,16 +70,7 @@ class Recipe extends CI_Model{
 			if ($p['id'] == $id)
 				return $p; 
 		//// END DEBUG 
-		$this->rest->initialize(array('server' => REST_SERVER));
-		$this->rest->option(CURLOPT_PORT, REST_PORT);
-		return $this->rest->get('/Recipes/item/id/' . $id);
     }
-
-	// Gets the associated recipe of a recipe
-	public function getRecipe($recipe) {
-		$this->load->model('recipe');
-		return $this->recipe->get($recipe['recipeId']);
-	}
 
 	// Determine if a record exists
     function exists($id)
@@ -98,9 +85,6 @@ class Recipe extends CI_Model{
         ////DEBUG 
         return;
         ////END DEBUG 
-		$this->rest->initialize(array('server' => REST_SERVER));
-        $this->rest->option(CURLOPT_PORT, REST_PORT);
-        $retrieved = $this->rest->post('/Recipes/item/id/' . $record['id'], $record);
     }
 
     // Get a blank object.
@@ -118,9 +102,6 @@ class Recipe extends CI_Model{
         ////DEBUG
         return; 
         ////END DEBUG 
-		$this->rest->initialize(array('server' => REST_SERVER));
-        $this->rest->option(CURLOPT_PORT, REST_PORT);
-        $retrieved = $this->rest->put('/Recipes/item/id' . $record['id'], $record);
     }
 
 	    // Delete a record from the DB
@@ -129,9 +110,6 @@ class Recipe extends CI_Model{
         ////DEBUG
         return;
         ////END DEBUG 
-		$this->rest->initialize(array('server' => REST_SERVER));
-		$this->rest->option(CURLOPT_PORT, REST_PORT);
-		return $this->rest->delete('/Recipes/item/id/' . $id);
     }
 
     

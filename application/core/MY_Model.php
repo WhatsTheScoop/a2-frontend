@@ -223,7 +223,8 @@ class MY_Model extends CI_Model implements Data_mapper {
 		$query = $this->db->get($this->_tableName);
 		if ($query->num_rows() < 1)
 			return null;
-		return $query->row();
+		$record = get_object_vars($query->row());
+		return $record;
 	}
 
 	// Retrieve the query object for a single record
@@ -278,7 +279,10 @@ class MY_Model extends CI_Model implements Data_mapper {
 	{
 		$this->db->order_by($this->_keyField, 'asc');
 		$query = $this->db->get($this->_tableName);
-		return $query->result();
+		$results = array();
+		foreach ($query->result() as $row) 
+			array_push($results, get_object_vars($row));
+		return $results;
 	}
 
 	// Return all records as a result set

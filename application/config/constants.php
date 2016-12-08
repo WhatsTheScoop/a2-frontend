@@ -91,5 +91,5 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 |
 | Other constants used by the application
 */
-define('REST_SERVER', 'http://backend.local');  // the REST server host
+define('REST_SERVER', 'http://a2backend.local');  // the REST server host
 define('REST_PORT', $_SERVER['SERVER_PORT']);   // the port you are running the server on

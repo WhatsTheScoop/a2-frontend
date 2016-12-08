@@ -16,7 +16,11 @@
             </td>
             <td>{code}</td>
             <td>{description}</td>                
-            <td>{ingredients}</td>
+            <td>
+            {ingredients}
+                {name} x {quantity} <br>
+            {/ingredients}
+            </td>
             <td>
                 <a href="recipes/details/{id}"><span class="glyphicon glyphicon-search"></span></button></a>
                 <a href="recipes/edit/{id}"><span class="glyphicon glyphicon-edit"></span></a>

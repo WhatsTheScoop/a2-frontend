@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-class Product extends MY_Model {
+class Products extends MY_Model {
     
 	public static $fields =  ['id','recipeId','price','inStock','promotion'];
 
@@ -79,12 +79,6 @@ class Product extends MY_Model {
         $this->update($product);
     }
 
-	// Determine if a record exists
-    function exists($id) {
-		$result = $this->get($id);
-		return !empty($result);
-	}
-
     // Convenience method for adding to stock 
     function addToStock($id, $quantity) {
         $record = $this->get($id);
@@ -105,60 +99,11 @@ class Product extends MY_Model {
 
 /// SECTION: CRUD
 
-    // Return all records as an array of objects
-    function all() {
-		//// DEBUG 
-		return Product::$data;
-		//// END DEBUG 
-    }
-
-    // Retrieve an existing DB record as an object
-    function get($id) {
-		//// DEBUG 
-		foreach (Product::$data as $p)
-			if ($p['id'] == $id)
-				return $p; 
-		//// END DEBUG 
-    }
-
     // Gets the associated recipe of a product
 	public function getRecipe($product) {
 		$this->load->model('recipe');        
 		return $this->Recipe->get($product['recipeId']);
 	}
-
-    // Add a record to the DB
-    function add($record)
-    {
-        ////DEBUG 
-        return;
-        ////END DEBUG 
-    }
-
-    // Get a blank object.
-    function create()
-    {
-        $object = array();
-        foreach (Product::$fields as $name)
-            $object[$name] = "";
-        return $object;
-    }
-
-    // Update a record in the DB
-    function update($record)
-    {  
-        ////DEBUG
-        return; 
-        ////END DEBUG 
-    }
-
-	    // Delete a record from the DB
-    function delete($id)
-    {
-        ////DEBUG
-        return;
-        ////END DEBUG 
-    }
 
 /// end section: CRUD  
 

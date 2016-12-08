@@ -4,7 +4,7 @@
  * @author Spencer
  * */
 
-class Recipe extends MY_Model {
+class Recipes extends MY_Model {
     
 	public static $fields =  ['id','code','description','ingredients'];
 
@@ -44,73 +44,41 @@ class Recipe extends MY_Model {
 
     // Determines how a record should be displayed
     public static function createViewModel($record) {
+        $ingredients = array();
+        foreach ($record['ingredients'] as $i) {
+            array_push($ingredients, [
+                'name' => $i['item']['name'],
+                'quantity' => $i['quantity']
+            ]);
+        }
+
         $record['id']        	= $record['id'];
         $record['code'] 		= ucwords($record['code']);
         $record['description']  = ucfirst($record['description']);
-        $record['ingredients']  = $record['ingredients'];	// TODO
+        $record['ingredients']  = $ingredients;
+
         return $record;
     }
 
-	// constructor
-    function __construct() {
-        parent::__construct();
+    function getIngredients($recipe) {
+        $recipeId = $recipe['id'];
+        $bridgeItems = $this->db->query('SELECT * FROM recipeingredients WHERE recipeid = ' . $recipeId);
+
+        // Retrieve the ingredient details and prepare a result 
+        $ingredients = array();
+        foreach($bridgeItems->result() as $bi) {
+            $bi = get_object_vars($bi);
+            
+            $ingredient = $this->Ingredient->get($bi['ingredientid']);
+            
+            $item = [
+                'item' => $ingredient, 
+                'quantity' => $bi['quantity']
+            ];
+            array_push($ingredients, $item);    
+        }
+
+        return $ingredients;
     }
 
-    // Return all records as an array of objects
-    function all() {
-		//// DEBUG 
-		return Recipe::$data;
-		//// END DEBUG 
-    }
-
-    // Retrieve an existing DB record as an object
-    function get($id) {
-		//// DEBUG 
-		foreach (Recipe::$data as $p)
-			if ($p['id'] == $id)
-				return $p; 
-		//// END DEBUG 
-    }
-
-	// Determine if a record exists
-    function exists($id)
-	{
-		$result = $this->get();
-		return !empty($result);
-	}
-
-    // Add a record to the DB
-    function add($record)
-    {
-        ////DEBUG 
-        return;
-        ////END DEBUG 
-    }
-
-    // Get a blank object.
-    function create()
-    {
-        $object = array();
-        foreach (Recipe::$fields as $name)
-            $object[$name] = "";
-        return $object;
-    }
-
-    // Update a record in the DB
-    function update($record)
-    {  
-        ////DEBUG
-        return; 
-        ////END DEBUG 
-    }
-
-	    // Delete a record from the DB
-    function delete($id)
-    {
-        ////DEBUG
-        return;
-        ////END DEBUG 
-    }
-
-    
 }

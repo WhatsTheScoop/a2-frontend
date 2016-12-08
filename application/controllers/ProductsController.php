@@ -3,7 +3,7 @@
  * @author: Jason Cheung
  * Date: Dec 3, 2016
  */
-class Products extends Application {
+class ProductsController extends Application {
 
     function __construct() {
         parent::__construct();
@@ -16,8 +16,9 @@ class Products extends Application {
         $this->data['pagebody'] = 'products/index';
         
         $products = array();
+        
         foreach ($this->Product->all() as $p)
-            array_push($products, Product::createViewModel($p));
+            array_push($products, Products::createViewModel($p));
 
         $this->data['products'] = $products;
         $this->data['backUrl'] = base_url();
@@ -36,7 +37,7 @@ class Products extends Application {
             $record = $this->input->post();
 
             // Check if model is valid 
-            $this->form_validation->set_rules(Product::$rules);
+            $this->form_validation->set_rules(Products::$rules);
             if (!$this->form_validation->run()) {
                 // Invalid, reload the form and display errors 
                 $this->data['errors'] = validation_errors();
@@ -66,7 +67,7 @@ class Products extends Application {
             $this->notFound($id);
             return;
         } else {
-            $product = Product::createViewModel($product);
+            $product = Products::createViewModel($product);
             $this->data['model'] = array($product);
             $this->render();                
         }        
@@ -90,7 +91,7 @@ class Products extends Application {
             $record = $this->input->post();
 
             // Check if model is valid 
-            $this->form_validation->set_rules(Product::$rules);
+            $this->form_validation->set_rules(Products::$rules);
             if (!$this->form_validation->run()) {
                 // Invalid, reload the form and display errors 
                 $this->data['errors'] = validation_errors();

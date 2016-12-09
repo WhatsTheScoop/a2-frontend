@@ -20,7 +20,6 @@ use ice_cream; -- Database name goes here
 --
 -- Table structure for table `ci_sessions`
 --
-LOCK TABLES `ci_sessions` WRITE;
 DROP TABLE IF EXISTS `ci_sessions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -41,7 +40,6 @@ CREATE TABLE `ci_sessions` (
 
 /*!40000 ALTER TABLE `ci_sessions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ci_sessions` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `ingredients`

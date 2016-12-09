@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-class Ingredient extends CI_Model{
+class Ingredients extends CI_Model{
     
 	public static $fields =  ['id','name','price','type','perBox','onHand'];
 
@@ -51,45 +51,52 @@ class Ingredient extends CI_Model{
         $this->load->library(['curl', 'format', 'rest']);
     }
 
-    // Return all records as an array of objects
-    function all() {
-		//// DEBUG 
-		return Ingredient::$data;
-		//// END DEBUG 
+	// Get number of ingredients on hand in the back-end (warehouse)
+	function getOnHand($id) {
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        return $this->rest->get('/Ingredients');
+        return $this->rest->get('/SuppliesAPI/getonhand/' . $id);				// TODO: Might need to open this object up 
+	}
+
+	// Place an order for more of an ingredient to the back-end (warehouse)
+	function orderMore($id, $numOfBoxes) {
+		$this->rest->initialize(array('server' => REST_SERVER));
+        $this->rest->option(CURLOPT_PORT, REST_PORT);
+        return $this->rest->get('/SuppliesAPI/add/' . $id . '/' . $numOfBoxes);// TODO: Returning just an OK message 
+	}
+
+	// Use an ingredient stored in the back-end (warehouse)
+	function consumeIngredient($id, $numTaken) {
+		$this->rest->initialize(array('server' => REST_SERVER));
+        $this->rest->option(CURLOPT_PORT, REST_PORT);
+        return $this->rest->get('/SuppliesAPI/use/' . $id . '/' . $numTaken);	// TODO: Returning just an OK message 
+	}
+
+    // Return all records as an array of objects
+    function all() {
+		$this->rest->initialize(array('server' => REST_SERVER));       
+        $this->rest->option(CURLOPT_PORT, REST_PORT);
+        $records = $this->rest->get('/SuppliesAPI/item/id');
+        $results = array();
+        foreach ($records as $r) 
+            array_push($results, get_object_vars($r));
+        return $results;
     }
 
     // Retrieve an existing DB record as an object
     function get($id) {
-		//// DEBUG 
-		foreach (Ingredient::$data as $p)
-			if ($p['id'] == $id)
-				return $p; 
-		//// END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
 		$this->rest->option(CURLOPT_PORT, REST_PORT);
-		return $this->rest->get('/Ingredients/item/id/' . $id);
+		$record = $this->rest->get('/SuppliesAPI/item/id/' . $id);
+        return get_object_vars($record[0]);
     }
 
     function getByKey($key, $value) {
-        //// DEBUG 
-        foreach (Ingredient::$data as $i) 
-            if (strtolower($i[$key]) == strtolower($value)) 
-                return $i;
-        //// END DEBUG 
         $all = $this->all();
         foreach ($all as $i) 
             if (strtolower($i[$key]) == strtolower($value)) 
                 return $i;
     }
-
-	// Gets the associated recipe of a ingredient
-	public function getRecipe($ingredient) {
-		$this->load->model('recipe');
-		return $this->recipe->get($ingredient['recipeId']);
-	}
 
 	// Determine if a record exists
     function exists($id)
@@ -98,7 +105,8 @@ class Ingredient extends CI_Model{
 		return !empty($result);
 	}
 
-    // Add a record to the DB
+	// TODO: CONFLICT with back-end naming convention (their add is our orderMore())
+    // Add a record to the DB 
     function add($record)
     {
         ////DEBUG 
@@ -106,7 +114,7 @@ class Ingredient extends CI_Model{
         ////END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        $retrieved = $this->rest->post('/Ingredients/item/id/' . $record['id'], $record);
+        $retrieved = $this->rest->post('/SuppliesAPI/item/id/' . $record['id'], $record);
     }
 
     // Get a blank object.
@@ -126,10 +134,10 @@ class Ingredient extends CI_Model{
         ////END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        $retrieved = $this->rest->put('/Ingredients/item/id' . $record['id'], $record);
+        $retrieved = $this->rest->put('/SuppliesAPI/item/id' . $record['id'], $record);
     }
 
-	    // Delete a record from the DB
+	// Delete a record from the DB
     function delete($id)
     {
         ////DEBUG
@@ -137,7 +145,7 @@ class Ingredient extends CI_Model{
         ////END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
 		$this->rest->option(CURLOPT_PORT, REST_PORT);
-		return $this->rest->delete('/Ingredients/item/id/' . $id);
+		return $this->rest->delete('/SuppliesAPI/item/id/' . $id);
     }
 
 }

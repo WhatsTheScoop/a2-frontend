@@ -4,9 +4,18 @@
  * @author Spencer
  * */
 
-class Recipe extends CI_Model{
+class Recipes extends MY_Model {
     
-    var $data = array(
+	public static $fields =  ['id','code','description','ingredients'];
+
+    public static $rules = [
+        ['field'=>'id', 		'label'=>'Recipe ID',	'rules'=>'required|integer'],
+        ['field'=>'code', 		'label'=>'Name',		'rules'=>'required|alpha_numeric_spaces'],
+        ['field'=>'description','label'=>'description',	'rules'=>'required|alpha_numeric_spaces'],
+        ['field'=>'ingredients','label'=>'ingredients', 'rules'=>'']
+	];
+
+    public static $data = array(
 		array('id' => '0',  'code' => 'Child Cone', 'description' => 'One small scoop of vanilla, perfect for a child!',  'ingredients' =>
 			array('1' => 1, '3' => 1)),
 		array('id' => '1',  'code' => 'Large Vanilla', 'description' => 'Two scoops of vanilla goodness.',  'ingredients' =>
@@ -33,27 +42,43 @@ class Recipe extends CI_Model{
 			array('0'=> 1, '9'=>1, '10'=> 1, '11'=>1))
 	);
 
-	// Constructor
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	// retrieve a single recipe
-	public function get($selected)
-	{
-		// iterate over the data until we find the one we want
-		foreach ($this->data as $recipe){
-			if ($recipe['id'] == $selected)
-				return $recipe;
+    // Determines how a record should be displayed
+    public static function createViewModel($record) {
+        $ingredients = array();
+        foreach ($record['ingredients'] as $i) {
+            array_push($ingredients, [
+                'name' => $i['item']['name'],
+                'quantity' => $i['quantity']
+            ]);
         }
-		return null;
-	}
 
-	// retrieve all of the recipes
-	public function all()
-	{
-		return $this->data;
-	}
-    
+        $record['id']        	= $record['id'];
+        $record['code'] 		= ucwords($record['code']);
+        $record['description']  = ucfirst($record['description']);
+        $record['ingredients']  = $ingredients;
+
+        return $record;
+    }
+
+    function getIngredients($recipe) {
+        $recipeId = $recipe['id'];
+        $bridgeItems = $this->db->query('SELECT * FROM recipeingredients WHERE recipeid = ' . $recipeId);
+
+        // Retrieve the ingredient details and prepare a result 
+        $ingredients = array();
+        foreach($bridgeItems->result() as $bi) {
+            $bi = get_object_vars($bi);
+            
+            $ingredient = $this->Ingredient->get($bi['ingredientid']);
+            
+            $item = [
+                'item' => $ingredient, 
+                'quantity' => $bi['quantity']
+            ];
+            array_push($ingredients, $item);    
+        }
+
+        return $ingredients;
+    }
+
 }

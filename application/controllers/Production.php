@@ -6,14 +6,20 @@
  */
 class Production extends Application {
 
+    function __construct() {
+        parent::__construct();
+        $this->load->library('form_validation');
+
+        $this->data['header'] = 'header';        
+        $this->data['base_url'] = base_url();        
+        $this->data['controller_url'] = base_url() . 'production';
+        $this->data['errors'] = "";
+    }
+
     public function index() {
-        $this->data['header'] = 'header';
         $this->data['pagebody'] = 'production/index';
-
-        $this->load->model('Recipe');
-        $recipes = $this->Recipe->all();
-
-        $this->data['recipes'] = $recipes;
+        $this->data['recipes'] = $this->Recipe->all();
+        
         $this->render();
     }
 

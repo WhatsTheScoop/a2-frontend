@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-class Supplies extends CI_Model{
+class Ingredients extends CI_Model{
     
 	public static $fields =  ['id','name','price','type','perBox','onHand'];
 
@@ -16,7 +16,7 @@ class Supplies extends CI_Model{
         ['field'=>'price', 	'label'=>'Price',	        'rules'=>'required|decimal'],
         ['field'=>'type', 	'label'=>'Type',            'rules'=>'required|alpha'],
 		['field'=>'perBox',	'label'=>'# per Box',       'rules'=>'required|integer|greater_than[0]'],
-        ['field'=>'onHand', 'label'=>'On Hand',         'rules'=>'required|integer|greater_than_equal_to[0]']
+        ['field'=>'onHand', 'label'=>'On Hand',         'rules'=> 'required|integer|greater_than_equal_to[0]']
 	];
 
     public static $data = array(
@@ -55,43 +55,40 @@ class Supplies extends CI_Model{
 	function getOnHand($id) {
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        return $this->rest->get('/Supplies/getonhand/' . $id);				// TODO: Might need to open this object up 
+        return $this->rest->get('/SuppliesAPI/getonhand/' . $id);				// TODO: Might need to open this object up 
 	}
 
 	// Place an order for more of an ingredient to the back-end (warehouse)
 	function orderMore($id, $numOfBoxes) {
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        return $this->rest->get('/Supplies/add/' . $id . '/' . $numOfBoxes);// TODO: Returning just an OK message 
+        return $this->rest->get('/SuppliesAPI/add/' . $id . '/' . $numOfBoxes);// TODO: Returning just an OK message 
 	}
 
 	// Use an ingredient stored in the back-end (warehouse)
 	function consumeIngredient($id, $numTaken) {
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        return $this->rest->get('/Supplies/use/' . $id . '/' . $numTaken);	// TODO: Returning just an OK message 
+        return $this->rest->get('/SuppliesAPI/use/' . $id . '/' . $numTaken);	// TODO: Returning just an OK message 
 	}
 
     // Return all records as an array of objects
     function all() {
-		//// DEBUG 
-		return Ingredient::$data;
-		//// END DEBUG 
-		$this->rest->initialize(array('server' => REST_SERVER));
+		$this->rest->initialize(array('server' => REST_SERVER));       
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        return $this->rest->get('/Supplies');
+        $records = $this->rest->get('/SuppliesAPI/item/id');
+        $results = array();
+        foreach ($records as $r) 
+            array_push($results, get_object_vars($r));
+        return $results;
     }
 
     // Retrieve an existing DB record as an object
     function get($id) {
-		//// DEBUG 
-		foreach (Ingredient::$data as $p)
-			if ($p['id'] == $id)
-				return $p; 
-		//// END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
 		$this->rest->option(CURLOPT_PORT, REST_PORT);
-		return $this->rest->get('/Supplies/item/id/' . $id);
+		$record = $this->rest->get('/SuppliesAPI/item/id/' . $id);
+        return get_object_vars($record[0]);
     }
 
     function getByKey($key, $value) {
@@ -117,7 +114,7 @@ class Supplies extends CI_Model{
         ////END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        $retrieved = $this->rest->post('/Supplies/item/id/' . $record['id'], $record);
+        $retrieved = $this->rest->post('/SuppliesAPI/item/id/' . $record['id'], $record);
     }
 
     // Get a blank object.
@@ -137,10 +134,10 @@ class Supplies extends CI_Model{
         ////END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        $retrieved = $this->rest->put('/Supplies/item/id' . $record['id'], $record);
+        $retrieved = $this->rest->put('/SuppliesAPI/item/id' . $record['id'], $record);
     }
 
-	    // Delete a record from the DB
+	// Delete a record from the DB
     function delete($id)
     {
         ////DEBUG
@@ -148,7 +145,7 @@ class Supplies extends CI_Model{
         ////END DEBUG 
 		$this->rest->initialize(array('server' => REST_SERVER));
 		$this->rest->option(CURLOPT_PORT, REST_PORT);
-		return $this->rest->delete('/Supplies/item/id/' . $id);
+		return $this->rest->delete('/SuppliesAPI/item/id/' . $id);
     }
 
 }

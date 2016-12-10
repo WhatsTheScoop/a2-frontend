@@ -3,7 +3,7 @@
  * @author: Jason Cheung
  * Date: Dec 3, 2016
  */
-class Recipes extends Application {
+class RecipesController extends Application {
 
     function __construct() {
         parent::__construct();
@@ -16,8 +16,10 @@ class Recipes extends Application {
         $this->data['pagebody'] = 'Recipes/index';
         
         $records = array();
-        foreach ($this->Recipe->all() as $p)
-            array_push($records, Recipe::createViewModel($p));
+        foreach ($this->Recipe->all() as $p) {
+            $p['ingredients'] = $this->Recipe->getIngredients($p);
+            array_push($records, Recipes::createViewModel($p));
+        }
 
         $this->data['models'] = $records;
         $this->data['backUrl'] = base_url();
@@ -37,7 +39,7 @@ class Recipes extends Application {
             $record['ingredients'] = array();
 
             // Check if model is valid 
-            $this->form_validation->set_rules(Recipe::$rules);
+            $this->form_validation->set_rules(Recipes::$rules);
             if (!$this->form_validation->run()) {
                 // Invalid, reload the form and display errors 
                 $this->data['errors'] = validation_errors();
@@ -76,7 +78,7 @@ class Recipes extends Application {
             $this->notFound($id);
             return;
         } else {
-            $Recipe = Recipe::createViewModel($Recipe);
+            $Recipe = Recipes::createViewModel($Recipe);
             $this->data['model'] = array($Recipe);
             $this->render();                
         }        
@@ -100,7 +102,7 @@ class Recipes extends Application {
             $record = $this->input->post();
 
             // Check if model is valid 
-            $this->form_validation->set_rules(Recipe::$rules);
+            $this->form_validation->set_rules(Recipes::$rules);
             if (!$this->form_validation->run()) {
                 // Invalid, reload the form and display errors 
                 $this->data['errors'] = validation_errors();

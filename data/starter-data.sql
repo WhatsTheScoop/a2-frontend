@@ -20,7 +20,7 @@ use ice_cream; -- Database name goes here
 --
 -- Table structure for table `ci_sessions`
 --
-LOCK TABLES `ci_sessions` WRITE;
+unlock tables;
 DROP TABLE IF EXISTS `ci_sessions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -41,7 +41,6 @@ CREATE TABLE `ci_sessions` (
 
 /*!40000 ALTER TABLE `ci_sessions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ci_sessions` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `ingredients`
@@ -113,13 +112,13 @@ DROP TABLE IF EXISTS `products`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `products` (
-  `id` varchar(128) NOT NULL,
+  `id` int(16) NOT NULL AUTO_INCREMENT,
   `recipeId` varchar(128) NOT NULL,
   `price` decimal(5,2) NOT NULL,
   `inStock` int(10) NOT NULL,
   `promotion` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,19 +128,19 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES 
-('0','0',1.00,60,1),
-('1','1',2.00,20,1),
-('10','10',10.00,60,1),
-('11','11',5.00,70,0),
-('2','2',0.35,50,0),
-('3','3',0.80,10,0),
-('4','4',0.50,0,0),
-('5','5',0.50,30,0),
-('6','6',0.20,100,1),
-('7','7',0.60,8,0),
-('8','8',1.20,30,0),
-('9','9',30.00,50,1);
+INSERT INTO `products` (`recipeId`, `price`, `inStock`, `promotion`) VALUES 
+('1',1.00,60,1),
+('2',2.00,20,1),
+('11',10.00,60,1),
+('12',5.00,70,0),
+('3',0.35,50,0),
+('4',0.80,10,0),
+('5',0.50,0,0),
+('6',0.50,30,0),
+('7',0.20,100,1),
+('8',0.60,8,0),
+('9',1.20,30,0),
+('10',30.00,50,1);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 

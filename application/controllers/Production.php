@@ -24,25 +24,28 @@ class Production extends Application {
     }
 
     public function show($id = 0) {
-        $this->load->model('Recipe');
+        $this->load->model('Recipes');
         $recipe = $this->Recipe->get($id);
 
         if (is_null($recipe))
             show_404();
 
+        //var_dump($recipe);
+
         $this->data['header'] = 'header';
         $this->data['pagebody'] = 'production/show';
 
         $ingredients = array();
-        
-        foreach($recipe['ingredients'] as $key => $inStock){
-            if ($this->checkStock($key,$inStock)) {
-                $ingredients[] = array('name' => $this->getName($key), 'inStock' => $inStock, 'oos' => "OUT OF STOCK");
+        //var_dump($this->Recipe->getIngredients($recipe));
+        foreach($this->Recipe->getIngredients($recipe) as $item){
+            if ($this->checkStock($item['item']['id'],$item['quantity'])) {
+                $ingredients[] = array('name' => $item['item']['name'], 'inStock' => $item['quantity'], 'oos' => "OUT OF STOCK");
             } else {
-                $ingredients[] = array('name' => $this->getName($key), 'inStock' => $inStock, 'oos' => "");
+                $ingredients[] = array('name' => $item['item']['name'], 'inStock' => $item['quantity'], 'oos' => "");
             }
         }
         
+        $this->data['id'] = $recipe['id'];
         $this->data['code'] = $recipe['code'];
         $this->data['description'] = $recipe['description'];
         $this->data['ingredients'] = $ingredients;
@@ -52,17 +55,46 @@ class Production extends Application {
     }
     
     public function checkStock($key, $inStock) {
-        $this->load->model('Supplies');
+        $this->load->model('ingredients');
         
-        $count = $this->Supplies->get($key)['onHand'];
+        $count = $this->ingredients->get($key)['onHand'];
         return $count < $inStock;
     }
-    
-    public function getName($id) {
-        $this->load->model('Supplies');
-        
-        $item = $this->Supplies->get($id);
-        return $item['name'];
+
+    public function receipt()
+    {
+        $this->load->model('products');
+
+        $totalOrderCost = 0;
+        $message = "";
+
+        var_dump($this->input->post(NULL, TRUE));
+        //I know this isn't the best way to do this but for the time being im using it'
+        // ... (NULL, TRUE) returns all POST items with XSS filter
+        foreach ($this->input->post(NULL, TRUE) as $id => $quantity) {
+            
+
+             if ($quantity == 0)
+                 continue;
+            var_dump("hello in here");
+            $this->products->produce($id,$quantity);
+            // $this->ingredients->orderMore($id, $quantity);
+
+            // $supplyName = $ingredient['name'];
+            // $cost = $quantity * $ingredient['price'];
+            // $totalOrderCost = $totalOrderCost + $cost;
+
+            // $formattedCost = moneyFormat($cost);
+            $message = $message . "Product has been produced. <br>";
+        }
+
+        $this->data['header'] = 'header';
+        $this->data['pagebody'] = 'production/receipt';
+        $this->data['content'] = $message;
+        $this->data['totalCost'] = moneyFormat($totalOrderCost);
+        $this->data['backUrl'] = base_url() . "production";
+
+        $this->render();
     }
 
 }

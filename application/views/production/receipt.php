@@ -1,4 +1,4 @@
-<h1>Receiving Receipt Details</h1>
+<h1>Production Log Details</h1>
 <p>
     {content}
     <h4>Total Cost: {totalCost} <h4>

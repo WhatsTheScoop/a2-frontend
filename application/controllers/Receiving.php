@@ -17,8 +17,8 @@ class Receiving extends Application {
         $this->data['header'] = 'header';
         $this->data['pagebody'] = 'receiving/index';
         
-        $this->load->model('supplies');
-        $ingredients = $this->supplies->all();
+        $this->load->model('ingredients');
+        $ingredients = $this->ingredients->all();
 
         $supplyList = array();
         foreach($ingredients as $ingredient){
@@ -42,8 +42,8 @@ class Receiving extends Application {
     }
 
     public function show($id = 0) {
-        $this->load->model('supplies');
-        $ingredient = $this->supplies->get($id);
+        $this->load->model('ingredients');
+        $ingredient = $this->ingredients->get($id);
         
         if (is_null($ingredient))
             show_404();
@@ -63,7 +63,7 @@ class Receiving extends Application {
     }
     public function receipt()
     {
-        $this->load->model('supplies');
+        $this->load->model('ingredients');
 
         $totalOrderCost = 0;
         $message = "";
@@ -74,10 +74,11 @@ class Receiving extends Application {
             if ($quantity == 0)
                 continue;
 
-            $supplies = $this->supplies->get($id);
+            $ingredient = $this->ingredients->get($id);
+            $this->ingredients->orderMore($id, $quantity);
 
-            $supplyName = $supplies['name'];
-            $cost = $quantity * $supplies['price'];
+            $supplyName = $ingredient['name'];
+            $cost = $quantity * $ingredient['price'];
             $totalOrderCost = $totalOrderCost + $cost;
 
             $formattedCost = moneyFormat($cost);

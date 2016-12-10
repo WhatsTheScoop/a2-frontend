@@ -18,20 +18,20 @@ class Products extends MY_Model {
 		['field'=>'promotion',	'label'=>'Promotion',	'rules'=>'integer']
 	];
 
-	public static $data = array(
-		array('id' => '0',  'recipeId' => 0,   'price' => 1.00, 'inStock' => 60, 	'promotion' => true),
-		array('id' => '1',  'recipeId' => 1,   'price' => 2.00, 'inStock' => 20, 	'promotion' => true),
-        array('id' => '2',  'recipeId' => 2,   'price' => .35, 	'inStock' => 50, 	'promotion' => false),
-        array('id' => '3',  'recipeId' => 3,   'price' => .80, 	'inStock' => 10, 	'promotion' => false),
-        array('id' => '4',  'recipeId' => 4,   'price' => .500, 'inStock' => 0, 	'promotion' => false),
-        array('id' => '5',  'recipeId' => 5,   'price' => .50, 	'inStock' => 30, 	'promotion' => false),
-        array('id' => '6',  'recipeId' => 6,   'price' => .20, 	'inStock' => 100,	'promotion' => true),
-        array('id' => '7',  'recipeId' => 7,   'price' => .60, 	'inStock' => 8,   	'promotion' => false),
-        array('id' => '8',  'recipeId' => 8,   'price' => 1.20, 'inStock' => 30, 	'promotion' => false),
-        array('id' => '9',  'recipeId' => 9,   'price' => 30.00,'inStock' => 50, 	'promotion' => true),
-        array('id' => '10', 'recipeId' => 10,  'price' => 10, 	'inStock' => 60, 	'promotion' => true),
-        array('id' => '11', 'recipeId' => 11,  'price' => 5, 	'inStock' => 70, 	'promotion' => false),
-	);
+	// public static $data = array(
+	// 	array('id' => '0',  'recipeId' => 0,   'price' => 1.00, 'inStock' => 60, 	'promotion' => true),
+	// 	array('id' => '1',  'recipeId' => 1,   'price' => 2.00, 'inStock' => 20, 	'promotion' => true),
+    //     array('id' => '2',  'recipeId' => 2,   'price' => .35, 	'inStock' => 50, 	'promotion' => false),
+    //     array('id' => '3',  'recipeId' => 3,   'price' => .80, 	'inStock' => 10, 	'promotion' => false),
+    //     array('id' => '4',  'recipeId' => 4,   'price' => .500, 'inStock' => 0, 	'promotion' => false),
+    //     array('id' => '5',  'recipeId' => 5,   'price' => .50, 	'inStock' => 30, 	'promotion' => false),
+    //     array('id' => '6',  'recipeId' => 6,   'price' => .20, 	'inStock' => 100,	'promotion' => true),
+    //     array('id' => '7',  'recipeId' => 7,   'price' => .60, 	'inStock' => 8,   	'promotion' => false),
+    //     array('id' => '8',  'recipeId' => 8,   'price' => 1.20, 'inStock' => 30, 	'promotion' => false),
+    //     array('id' => '9',  'recipeId' => 9,   'price' => 30.00,'inStock' => 50, 	'promotion' => true),
+    //     array('id' => '10', 'recipeId' => 10,  'price' => 10, 	'inStock' => 60, 	'promotion' => true),
+    //     array('id' => '11', 'recipeId' => 11,  'price' => 5, 	'inStock' => 70, 	'promotion' => false),
+	// );
 
     // Determines how a record should be displayed
     public static function createViewModel($record) {
@@ -53,16 +53,17 @@ class Products extends MY_Model {
         $recipe = $this->getRecipe($product);
 
         // check for enough ingredients 
-        foreach ($recipe['ingredients'] as $ingredient_id => $quantityRequired) {
-            if ($quantityRequired * $quantity> $this->Supplies->getOnHand($ingredient['id'])) {
+        var_dump($this->Recipe->getIngredients($recipe));
+        foreach ($this->Recipe->getIngredients($recipe) as $ingredient_id => $quantityRequired) {
+            if ($quantityRequired * $quantity> $this->ingredients->getOnHand($ingredient['id'])) {
                 return "Not enough ingredients.";   // TODO: More sophisticated error message (requires getting the entire ingredient.)
             }
         }
 
         // take the ingredients from the back-end (warehouse)
-        foreach ($recipe['ingredients'] as $ingredient_id => $quantityRequired) {
-            if ($quantityRequired > $this->Supplies->getOnHand($ingredient['id'])) {
-                $this->Supplies->consume($ingredient_id, $quantityRequired * $quantity);
+        foreach ($this->Recipe->getIngredients($recipe) as $ingredient_id => $quantityRequired) {
+            if ($quantityRequired > $this->ingredients->getOnHand($ingredient['id'])) {
+                $this->ingredients->consumeIngredients($ingredient_id, $quantityRequired * $quantity);
             }
         }
 
@@ -101,7 +102,7 @@ class Products extends MY_Model {
 
     // Gets the associated recipe of a product
 	public function getRecipe($product) {
-		$this->load->model('recipe');        
+        var_dump($product);
 		return $this->Recipe->get($product['recipeId']);
 	}
 

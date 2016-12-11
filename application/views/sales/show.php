@@ -2,7 +2,7 @@
 
 <form action="/sales/receipt" method="post">
     <table class="table">
-        <input type="hidden" name='id' value={id}>
+        <!--<input type="hidden" name='id' value={id}>-->
         <tr>     
             <th>Product ID</th>
             <td>{id}</td>
@@ -32,13 +32,13 @@
             <td>{promotion}</td>
         </tr>
         <tr>
-            <th>Place Order:</th>
+            <th>Quantity:</th>
             <td><input name={id} type="number" min="0" max="50" step="1"></td>
         </tr>
         <tr>
             <td></td>
-            <td><input class="btn btn-primary" type="submit" value="Receive Order"><td>
+            <td><input class="btn btn-primary" type="submit" value="Purchase"><td>
         </tr>
     </table>
 </form>
-<button onclick="location.href='{backUrl}'">Return</button>
+<button class="btn btn-active" onclick="location.href='{backUrl}'">Return</button>

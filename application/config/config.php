@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://project.local/';
+$config['base_url'] = 'http://a2frontend.local/';
 
 /*
 |--------------------------------------------------------------------------

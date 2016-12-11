@@ -35,4 +35,4 @@
         </tr>
     </form>
 </table>
-<button onclick="location.href='{backUrl}'">Return</button>
+<button class="btn btn-active" onclick="location.href='{backUrl}'">Return</button>

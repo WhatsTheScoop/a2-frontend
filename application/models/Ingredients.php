@@ -55,7 +55,7 @@ class Ingredients extends CI_Model{
 	function getOnHand($id) {
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        return $this->rest->get('/SuppliesAPI/getonhand/' . $id);				// TODO: Might need to open this object up 
+        return (int)$this->rest->get('/SuppliesAPI/onhand/id/' . $id);
 	}
 
 	// Place an order for more of an ingredient to the back-end (warehouse)
@@ -106,6 +106,9 @@ class Ingredients extends CI_Model{
 		$result = $this->get();
 		return !empty($result);
 	}
+
+
+    //// EVERYTHING BELOW HERE SHOULD BE DELETED  
 
 	// TODO: CONFLICT with back-end naming convention (their add is our orderMore())
     // Add a record to the DB 

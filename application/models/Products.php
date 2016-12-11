@@ -86,8 +86,8 @@ class Products extends MY_Model {
         $this->update($product);
     }
 
-    function sell($id, $quantity) {
-        $product['inStock'] = $product['inStock'] - $product; 
+    function sell($product, $quantity) {
+        $product['inStock'] = $product['inStock'] - $quantity; 
         if ($product['inStock'] < 0) {
             return "Error: You don't have enough " . $product['name'] . " in stock.";
         }

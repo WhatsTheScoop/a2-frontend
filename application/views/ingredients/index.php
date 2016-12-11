@@ -1,5 +1,5 @@
 <h1>{pagetitle}</h1>
-<button onclick="location.href='{base_url}/ingredients/create'" class="btn btn-primary">Create</button>
+<button onclick="location.href='{controller_url}/create'" class="btn btn-primary">Create</button>
 <hr>
 <table class="table table-striped table-bordered" action="">
     <thead>    
@@ -14,7 +14,7 @@
     {models}
         <tr>
             <td>
-                <a href="ingredients/details/{id}">{id}</a>
+                <a href="IngredientsController/details/{id}">{id}</a>
             </td>
             <td>{name}</td>
             <td>{price}</td>                
@@ -22,9 +22,9 @@
             <td>{perBox}</td>
             <td>{onHand}</td>            
             <td>
-                <a href="ingredients/details/{id}"><span class="glyphicon glyphicon-search"></span></button></a>
-                <a href="ingredients/edit/{id}"><span class="glyphicon glyphicon-edit"></span></a>
-                <a href="ingredients/delete/{id}"><span class="glyphicon glyphicon-trash"></span></a>         
+                <a href="IngredientsController/details/{id}"><span class="glyphicon glyphicon-search"></span></button></a>
+                <a href="IngredientsController/edit/{id}"><span class="glyphicon glyphicon-edit"></span></a>
+                <a href="IngredientsController/delete/{id}"><span class="glyphicon glyphicon-trash"></span></a>         
             </td>                
         </tr>
     {/models}

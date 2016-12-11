@@ -1,5 +1,5 @@
 <h1>{pagetitle}</h1>
-<button onclick="location.href='{base_url}/products/create'" class="btn btn-primary">Create</button>
+<button onclick="location.href='{controller_url}/create'" class="btn btn-primary">Create</button>
 <hr>
 <table class="table table-striped table-bordered" action="">
     <thead>    
@@ -13,16 +13,16 @@
     {products}
         <tr>
             <td>
-                <a href="Products/details/{id}">{id}</a>
+                <a href="ProductsController/details/{id}">{id}</a>
             </td>
             <td>{recipeId}</td>
             <td>{price}</td>                
             <td>{inStock}</td>
             <td>{promotion}</td>
             <td>
-                <a href="products/details/{id}"><span class="glyphicon glyphicon-search"></span></button></a>
-                <a href="products/edit/{id}"><span class="glyphicon glyphicon-edit"></span></a>
-                <a href="products/delete/{id}"><span class="glyphicon glyphicon-trash"></span></a>         
+                <a href="ProductsController/details/{id}"><span class="glyphicon glyphicon-search"></span></button></a>
+                <a href="ProductsController/edit/{id}"><span class="glyphicon glyphicon-edit"></span></a>
+                <a href="ProductsController/delete/{id}"><span class="glyphicon glyphicon-trash"></span></a>         
             </td>                
         </tr>
     {/products}

@@ -16,9 +16,9 @@ class RecipesController extends Application {
         $this->data['pagebody'] = 'Recipes/index';
         
         $records = array();
-        foreach ($this->Recipe->all() as $p) {
-            $p['ingredients'] = $this->Recipe->getIngredients($p);
-            array_push($records, Recipes::createViewModel($p));
+        foreach ($this->Recipe->all() as $r) {
+            $r['ingredients'] = $this->Recipe->getIngredients($r);
+            array_push($records, Recipes::createViewModel($r));
         }
 
         $this->data['models'] = $records;
@@ -48,13 +48,13 @@ class RecipesController extends Application {
             } else {
                 // ~Valid, continue checking ingredients 
 
-                $errors = checkIngredients($record);
+                $errors = $this->checkIngredients($record);
                 if ($errors != null) {
                     $this->data['errors'] = $errors;
                     $this->data['model'] = array($record);
                     $this->render();
+                    return;
                 }
-
                 // Add to server 
                 $this->Recipe->add($record);
                 $this->redirectToIndex();
@@ -109,7 +109,16 @@ class RecipesController extends Application {
                 $this->data['model'] = array($Recipe);
                 $this->render();
             } else {
-                // Valid, create and redirect back to index
+                // ~Valid, continue checking ingredients 
+
+                $errors = $this->checkIngredients($record);
+                if ($errors != null) {
+                    $this->data['errors'] = $errors;
+                    $this->data['model'] = array($record);
+                    $this->render();
+                    return;
+                }
+                // Add to server 
                 $this->Recipe->update($record);
                 $this->redirectToIndex();
             }
@@ -187,12 +196,14 @@ class RecipesController extends Application {
             }
 
             // Ingredient OK, reformat into record 
-            array_push($record['ingredients'], array($ingredient['id'] => $quantity));
+            array_push($record['ingredients'], array(
+                'item' => $ingredient, 
+                'quantity' => $quantity
+            ));
             unset($ingredient);
         }
         unset($record['ingredient_name']);
         unset($record['ingredient_quantity']);
-        
         return null;
     }
 

@@ -6,7 +6,6 @@
 class Admin extends Application {
 
     public function index() {
-        $this->data['header'] = 'header';
         $this->data['pagebody'] = 'admin/index';
         $this->render();
     }

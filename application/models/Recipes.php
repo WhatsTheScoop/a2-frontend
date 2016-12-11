@@ -61,19 +61,19 @@ class Recipes extends MY_Model {
     }
 
     function getIngredients($recipe) {
-        $recipeId = $recipe['id'];
-        $bridgeItems = $this->db->query('SELECT * FROM recipeingredients WHERE recipeid = ' . $recipeId);
+        $query = 'SELECT * FROM recipeingredients WHERE recipeid = ' . $recipe['id'];
+        $bridgeItems = $this->db->query($query)->result();
 
         // Retrieve the ingredient details and prepare a result 
         $ingredients = array();
-        foreach($bridgeItems->result() as $bi) {
+        foreach($bridgeItems as $bi) {
             $bi = get_object_vars($bi);
-            
+
             $ingredient = $this->Ingredient->get($bi['ingredientid']);
-            
+
             $item = [
                 'item' => $ingredient, 
-                'quantity' => $bi['quantity']
+                'quantity' => (int)$bi['quantity']
             ];
             array_push($ingredients, $item);    
         }

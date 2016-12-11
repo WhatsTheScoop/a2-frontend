@@ -48,27 +48,41 @@ class Products extends MY_Model {
         parent::__construct();
     }
 
-    // TODO: Not sure if this is handled in the controller  
-    function produce($product, $quantity) {
-        $recipe = $this->getRecipe($product);
+    function produce($id, $quantity) {
+        // check for valid quantity 
+        if ($quantity <= 0) {
+            return "You must order more than 0 boxes!";
+        }
+        
+        $product = $this->get($id);
+        
+        // check for valid product 
+        if ($product == null) {
+            return "Could not find a product with ID " . $id; 
+        }
 
+        $recipe = $this->getRecipe($product);
+        $ingredients = $this->Recipe->getIngredients($recipe);
         // check for enough ingredients 
-        var_dump($this->Recipe->getIngredients($recipe));
-        foreach ($this->Recipe->getIngredients($recipe) as $ingredient_id => $quantityRequired) {
-            if ($quantityRequired * $quantity> $this->ingredients->getOnHand($ingredient['id'])) {
+        foreach ($ingredients as $entry) {
+            $ingredient = $entry['item'];
+            $quantityRequired = $entry['quantity'];
+
+            if ($quantityRequired * $quantity > $this->Ingredient->getOnHand($ingredient['id'])) {
                 return "Not enough ingredients.";   // TODO: More sophisticated error message (requires getting the entire ingredient.)
             }
         }
 
         // take the ingredients from the back-end (warehouse)
-        foreach ($this->Recipe->getIngredients($recipe) as $ingredient_id => $quantityRequired) {
-            if ($quantityRequired > $this->ingredients->getOnHand($ingredient['id'])) {
-                $this->ingredients->consumeIngredients($ingredient_id, $quantityRequired * $quantity);
-            }
+        foreach ($ingredients as $entry) {
+            $ingredient = $entry['item'];
+            $quantityRequired = $entry['quantity'];
+
+            $this->Ingredient->consumeIngredient($ingredient['id'], $quantityRequired * $quantity);
         }
 
         // add to produced quantity to stock  
-        $product['inStock'] = $product['inStock'] + $product;
+        $product['inStock'] = $product['inStock'] + $quantity;
         $this->update($product);
     }
 
@@ -80,6 +94,7 @@ class Products extends MY_Model {
         $this->update($product);
     }
 
+//// REMOVE 
     // Convenience method for adding to stock 
     function addToStock($id, $quantity) {
         $record = $this->get($id);
@@ -97,12 +112,12 @@ class Products extends MY_Model {
 
         $this->update($record);
     }
+//// END REMOVE 
 
 /// SECTION: CRUD
 
     // Gets the associated recipe of a product
 	public function getRecipe($product) {
-        //var_dump($product);
 		return $this->Recipe->get($product['recipeId']);
 	}
 

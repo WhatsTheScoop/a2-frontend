@@ -73,7 +73,7 @@ class Products extends MY_Model {
     }
 
     function sell($product, $quantity) {
-        $product['inStock'] = $product['inStock'] - $product; 
+        $product['inStock'] = $product['inStock'] - $quantity; 
         if ($product['inStock'] < 0) {
             return "Error: You don't have enough " . $product['name'] . " in stock.";
         }
@@ -102,7 +102,7 @@ class Products extends MY_Model {
 
     // Gets the associated recipe of a product
 	public function getRecipe($product) {
-        var_dump($product);
+        //var_dump($product);
 		return $this->Recipe->get($product['recipeId']);
 	}
 

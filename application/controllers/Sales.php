@@ -67,19 +67,21 @@ class Sales extends Application {
 
     public function receipt()
     {
-        $this->load->model('product');
+        $this->load->model('products');
 
         $totalOrderCost = 0;
         $message = "";
-
+        //var_dump($this->input->post(NULL, TRUE));
         // ... (NULL, TRUE) returns all POST items with XSS filter
         foreach ($this->input->post(NULL, TRUE) as $id => $quantity) {
 
             if ($quantity == 0)
                 continue;
 
-            $product = $this->product->get($id);
-            $recipe  = $this->product->getRecipe($product);
+            $product = $this->products->get($id);
+            $recipe  = $this->products->getRecipe($product);
+            // var_dump($id);
+            $this->products->sell($product,$quantity);
 
             $productName = $recipe['code'];
             $cost = $quantity * $product['price'];

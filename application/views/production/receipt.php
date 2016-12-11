@@ -1,7 +1,6 @@
 <h1>Production Log Details</h1>
 <p>
     {content}
-    <h4>Total Cost: {totalCost} <h4>
 </p>
 
 

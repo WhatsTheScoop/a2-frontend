@@ -84,14 +84,8 @@ class Production extends Application {
                 var_dump("There wasn an error " . $error);
                 die();
             }
-            // $this->ingredients->orderMore($id, $quantity);
 
-            // $supplyName = $ingredient['name'];
-            // $cost = $quantity * $ingredient['price'];
-            // $totalOrderCost = $totalOrderCost + $cost;
-
-            // $formattedCost = moneyFormat($cost);
-            $message = $message . "Product has been produced. <br>";
+            $message = $message . " " . $quantity . " Product(s) has been produced. <br>";
         }
 
         $this->data['header'] = 'header';

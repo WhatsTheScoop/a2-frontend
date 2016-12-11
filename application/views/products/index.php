@@ -13,16 +13,16 @@
     {products}
         <tr>
             <td>
-                <a href="ProductsController/details/{id}">{id}</a>
+                <a href="/ProductsController/details/{id}">{id}</a>
             </td>
             <td>{recipeId}</td>
             <td>{price}</td>                
             <td>{inStock}</td>
             <td>{promotion}</td>
             <td>
-                <a href="ProductsController/details/{id}"><span class="glyphicon glyphicon-search"></span></button></a>
-                <a href="ProductsController/edit/{id}"><span class="glyphicon glyphicon-edit"></span></a>
-                <a href="ProductsController/delete/{id}"><span class="glyphicon glyphicon-trash"></span></a>         
+                <a href="/ProductsController/details/{id}"><span class="glyphicon glyphicon-search"></span></button></a>
+                <a href="/ProductsController/edit/{id}"><span class="glyphicon glyphicon-edit"></span></a>
+                <a href="/ProductsController/delete/{id}"><span class="glyphicon glyphicon-trash"></span></a>         
             </td>                
         </tr>
     {/products}

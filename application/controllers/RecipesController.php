@@ -80,6 +80,7 @@ class RecipesController extends Application {
             $this->notFound($id);
             return;
         } else {
+            $recipe['ingredients'] = $this->Recipe->getIngredients($recipe);
             $recipe = Recipes::createViewModel($recipe);
             $this->data['model'] = array($recipe);
             $this->render();                
@@ -145,7 +146,8 @@ class RecipesController extends Application {
             $this->notFound($id);
             return;
         } else {
-            $this->data['model'] = array($Recipe);
+            $Recipe['ingredients'] = $this->Recipe->getIngredients($Recipe);
+            $this->data['model'] = array(Recipes::createViewModel($Recipe));
             $this->render();
         }      
 
@@ -154,7 +156,6 @@ class RecipesController extends Application {
     // POST: /Recipe/delete_confirmed/1
     public function delete_confirmed($id) {
         $this->Recipe->delete($id);
-        // check if ok ? 
         $this->redirectToIndex();
     }
 

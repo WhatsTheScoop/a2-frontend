@@ -18,7 +18,7 @@
             <td>{description}</td>                
             <td>
             {ingredients}
-                {name} x {quantity} <br>
+                {quantity} x {name} <br>
             {/ingredients}
             </td>
             <td>

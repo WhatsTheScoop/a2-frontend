@@ -8,6 +8,8 @@
 <form method='POST'>
     <div class="col-md-4 col-md-offset-4">
         {model}
+        <input type="hidden" name="id" value="{id}" class="form-control" />
+
         <div class="form-group row">
             <label for='code'>Name</label>
             <input type="text" name="code" value="{code}" class="form-control" />

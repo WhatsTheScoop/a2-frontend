@@ -36,7 +36,7 @@ class RecipesController extends Application {
         if ($this->input->post()) {
             
             $record = $this->input->post();
-            $record['ingredients'] = array();
+            $record = Recipes::createFormModel($record);
 
             // Check if model is valid 
             $this->form_validation->set_rules(Recipes::$rules);
@@ -62,7 +62,9 @@ class RecipesController extends Application {
 
         // else, blank slate 
         } else {
-            $this->data['model'] = array($this->Recipe->create());
+            $recipe = $this->Recipe->create();
+            $recipe = Recipes::createFormModel($recipe);
+            $this->data['model'] = array($recipe);
             $this->render();
         }
 
@@ -73,13 +75,13 @@ class RecipesController extends Application {
         $this->data['pagetitle'] = 'Recipe Details';
         $this->data['pagebody'] = 'Recipes/details';
         
-        $Recipe = $this->Recipe->get($id);
-        if ($Recipe == null) {
+        $recipe = $this->Recipe->get($id);
+        if ($recipe == null) {
             $this->notFound($id);
             return;
         } else {
-            $Recipe = Recipes::createViewModel($Recipe);
-            $this->data['model'] = array($Recipe);
+            $recipe = Recipes::createViewModel($recipe);
+            $this->data['model'] = array($recipe);
             $this->render();                
         }        
     }
@@ -88,25 +90,25 @@ class RecipesController extends Application {
     public function edit($id) {
         $this->data['pagetitle'] = 'Edit Recipe';
         $this->data['pagebody'] = 'Recipes/edit';
-
         // Check if record exists 
-        $Recipe = $this->Recipe->get($id);
-        if ($Recipe == null) {
+        $recipe = $this->Recipe->get($id);
+        if ($recipe == null) {
             $this->notFound($id);
             return; 
-        } 
+        }
 
         // Check for form submission 
         if ($this->input->post()) {
             
             $record = $this->input->post();
+            $record = Recipes::createFormModel($record);
 
             // Check if model is valid 
             $this->form_validation->set_rules(Recipes::$rules);
             if (!$this->form_validation->run()) {
                 // Invalid, reload the form and display errors 
                 $this->data['errors'] = validation_errors();
-                $this->data['model'] = array($Recipe);
+                $this->data['model'] = array($record);
                 $this->render();
             } else {
                 // ~Valid, continue checking ingredients 
@@ -124,8 +126,10 @@ class RecipesController extends Application {
             }
 
         // Else load record data 
-        } else {
-            $this->data['model'] = array($Recipe);
+        } else {            
+            $recipe['ingredients'] = $this->Recipe->getIngredients($recipe);            
+            $recipe = Recipes::createFormModel($recipe);         
+            $this->data['model'] = array($recipe);
             $this->render();        
         }   
 
@@ -167,21 +171,18 @@ class RecipesController extends Application {
     }
 
     /**
-    * Check if a POST record's ingredients are valid and reformats the 
-    * record (to one that corresponds to Ingredient model) ready for upload. 
+    * Check if a form model record's ingredients are valid and reformats the 
+    * record (to one that corresponds to Ingredient base model) ready for upload. 
     * If invalid, it'll return a error message.
     */
     private function checkIngredients(&$record) {
         $record['ingredients'] = array();
-
-        $ingredientNames = $record['ingredient_name'];
-        $ingredientQuantities = $record['ingredient_quantity'];
-        // Note: The array lengths will always be the same by design  
+        $processedIngredients = array();
 
         // Check and reformat all ingredients 
-        for ($i = 0; $i < count($ingredientNames); $i++) {
-            $name = $ingredientNames[$i];
-            $quantity = $ingredientQuantities[$i];
+        foreach ($record['form_ingredients'] as $entry) {
+            $name = $entry['name'];
+            $quantity = $entry['quantity'];
 
             // Check for name and quantity existance 
             if (empty($name) || empty($quantity)) {
@@ -195,15 +196,20 @@ class RecipesController extends Application {
                 return "Ingredient " . $name . " could not be found.";
             }
 
+            // Check if this ingredient was already processed 
+            if (in_array($ingredient['id'], $processedIngredients)) {
+                return "One line per unique ingredient!";
+            }
+
             // Ingredient OK, reformat into record 
             array_push($record['ingredients'], array(
                 'item' => $ingredient, 
                 'quantity' => $quantity
             ));
+            array_push($processedIngredients, $ingredient['id']);
             unset($ingredient);
         }
-        unset($record['ingredient_name']);
-        unset($record['ingredient_quantity']);
+        unset($record['form_ingredients']);
         return null;
     }
 

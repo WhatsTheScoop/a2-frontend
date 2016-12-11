@@ -1,12 +1,13 @@
 <?php
 
 /*
- * @author Spencer
- * */
+ * @author Jason Cheung 
+ */
 
 class Recipes extends MY_Model {
     
-    /* FORMAT 
+    /* 
+    === BASE FORMAT ===
     array(
         'id' => int,
         'code' => string,k 
@@ -16,9 +17,21 @@ class Recipes extends MY_Model {
                 'item' => Ingredient, 
                 'quantity' => int 
             ),
+            array(
+                'item' => Ingredient, 
+                'quantity' => int 
+            ),
             ... 
         )     
     )
+
+    === NOTES ===
+    There are three different types of models to use:
+    1. Base : For general purpose handling by controllers and database. 
+    2. View : For displaying to index and details page. 
+    3. Form : For displaying by create and edit page, as well as processing input process in the controller.
+    
+    By default get does not load the ingredients, be sure to call getIngredients() if you require them. 
     */
 
 	public static $fields =  ['id','code','description','ingredients'];    
@@ -44,6 +57,53 @@ class Recipes extends MY_Model {
         $record['code'] 		= ucwords($record['code']);
         $record['description']  = ucfirst($record['description']);
         $record['ingredients']  = $ingredients;
+
+        return $record;
+    }
+
+    // A model used for forms display and processing input from forms too. 
+    public static function createFormModel($record) {
+        // if clean record 
+        if (!isset($record['form_ingredients'])) {
+            $record['form_ingredients'] = array();
+        }
+        // if loading from existing record 
+        if (!empty($record['ingredients'])) {
+            foreach ($record['ingredients'] as $i) {
+                array_push($record['form_ingredients'], [
+                    'name' => $i['item']['name'],
+                    'quantity' => $i['quantity']
+                ]);
+            }
+        }
+        unset($record['ingredients']);
+
+        // if loading from form (assumes quantity is also set) 
+        if (!empty($record['ingredient_name']) && !empty($record['ingredient_quantity'])) {
+            $ingredientNames = $record['ingredient_name'];
+            $ingredientQuantities = $record['ingredient_quantity'];
+
+            // reformat ingredient input  
+            for ($i = 0; $i < count($ingredientNames); $i++) {
+                array_push($record['form_ingredients'], [
+                    'name' => $ingredientNames[$i], 
+                    'quantity' => $ingredientQuantities[$i]
+                ]);
+            }
+        }
+        unset($record['ingredient_name']);
+        unset($record['ingredient_quantity']);
+
+        if (!empty($record['form_inegredients'])) {
+            array_push($record['form_ingredients'], [
+                'name' => '', 
+                'quantity' => ''
+            ]);
+        }
+
+        $record['id']        	= $record['id'];
+        $record['code'] 		= $record['code'];
+        $record['description']  = $record['description'];
 
         return $record;
     }

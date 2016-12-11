@@ -12,7 +12,7 @@
     {models}
         <tr>
             <td>
-                <a href="RecipesController/details/{id}">{id}</a>
+                <a href="/RecipesController/details/{id}">{id}</a>
             </td>
             <td>{code}</td>
             <td>{description}</td>                
@@ -22,9 +22,9 @@
             {/ingredients}
             </td>
             <td>
-                <a href="RecipesController/details/{id}"><span class="glyphicon glyphicon-search"></span></button></a>
-                <a href="RecipesController/edit/{id}"><span class="glyphicon glyphicon-edit"></span></a>
-                <a href="RecipesController/delete/{id}"><span class="glyphicon glyphicon-trash"></span></a>         
+                <a href="/RecipesController/details/{id}"><span class="glyphicon glyphicon-search"></span></button></a>
+                <a href="/RecipesController/edit/{id}"><span class="glyphicon glyphicon-edit"></span></a>
+                <a href="/RecipesController/delete/{id}"><span class="glyphicon glyphicon-trash"></span></a>         
             </td>                
         </tr>
     {/models}

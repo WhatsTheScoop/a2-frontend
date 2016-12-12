@@ -28,4 +28,4 @@
         </tr>
     {/models}
 </table>
-<button onclick="location.href='{base_url}'" class="btn btn-default">Return</button>
+<a href="/Admin" class="btn btn-default">Return</a>

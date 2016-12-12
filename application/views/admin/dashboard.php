@@ -18,5 +18,5 @@
         </tr>
     {/transactions}
 </table>
-<button onclick="location.href='{base_url}'" class="btn btn-default">Return</button>
+<button onclick="location.href='{base_url}admin'" class="btn btn-default">Return</button>
 

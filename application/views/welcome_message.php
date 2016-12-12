@@ -1,5 +1,5 @@
 <div id="body" class="text-center">
-    <h1>Assignment #1 From Comp 4711</h1>
+    <h1>Assignment #2 From Comp 4711</h1>
 
     <table class="table">
     <form action="">

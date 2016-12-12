@@ -63,7 +63,10 @@ class Ingredients extends CI_Model{
         
 		$this->rest->initialize(array('server' => REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        //die('/SuppliesAPI/recieve/id/' . $id . '/quantity/' . $numOfBoxes);
+        $ingedient = $this->get($id);
+        $item['name'] = $ingedient['name'];
+        $item['price'] = $ingedient['price'] * $numOfBoxes * -1;
+        $this->Transaction->add($item);
         return $this->rest->put('/SuppliesAPI/receive/id/' . $id . '/quantity/' . $numOfBoxes);// TODO: Returning just an OK message 
 	}
 

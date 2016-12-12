@@ -15,6 +15,11 @@
  */
 class Sales extends Application {
 
+    function __construct() {
+        parent::__construct();
+        $this->load->library('form_validation');
+    }
+
     public function index() {
         $this->data['header'] = 'header';
         $this->data['pagebody'] = 'sales/index';

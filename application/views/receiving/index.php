@@ -22,7 +22,7 @@
             </tr>
         {/supplies}
         <tr>
-            <td></td>
+            <td><a href="{base_url}" class="btn btn-default">Return</a></td>
             <td></td>
             <td></td>
             <td></td>

@@ -12,6 +12,4 @@ class Transactions extends MY_Model {
         $date = date("Y/m/d");
         $this->db->query("INSERT INTO transactions (cost, productSold, date) VALUES ('{$item['price']}', '{$item['name']}', '{$date}')");
     }    
-
-
 }

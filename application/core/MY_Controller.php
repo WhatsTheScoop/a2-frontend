@@ -30,10 +30,10 @@ class Application extends CI_Controller
 		$this->data['ci_version'] = (ENVIRONMENT === 'development') ? 'CodeIgniter Version <strong>'.CI_VERSION.'</strong>' : '';
         
 		// get the user role
-		$this->data['userrole'] = $this->session->userdata('userrole');
-		if ($this->data['userrole'] == NULL){
-			$this->data['userrole'] = 'guest';
-        }
+		$role = $this->session->userdata('userrole');
+		$this->data['userrole'] = $role ? $role : 'guest';
+		$this->data['isAdmin'] = $role == 'admin';
+		$this->data['isUser'] = ($role == 'user') || ($role == 'admin');
 	}
 
 	/**
@@ -58,7 +58,7 @@ class Application extends CI_Controller
         if($userrole == 'admin'){
             return true;
         } else {
-            redirect(base_url());
+            redirect(base_url() . "/errors/noaccess");
             return false;
         }
     }
@@ -68,7 +68,7 @@ class Application extends CI_Controller
         if($userrole == 'user' || $userrole == 'admin'){
             return true;
         } else {
-            redirect(base_url());
+            redirect(base_url() . "errors/noaccess");
             return false;
         }
 	}

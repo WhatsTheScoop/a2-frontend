@@ -14,6 +14,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
+                {if isUser}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Receiving <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -30,6 +31,7 @@
                         </li>
                     </ul>
                 </li>
+                {/if}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sales <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -38,9 +40,11 @@
                         </li>
                     </ul>
                 </li>
+                {if isAdmin}
                 <li>
                     <a href="/admin">Admin</a>
                 </li>
+                {/if}
                 <li>
                     <a href="/toggle">Toggle Role</a>
                 </li>

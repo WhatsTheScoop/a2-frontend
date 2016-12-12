@@ -5,7 +5,7 @@
  * Time: 3:10 PM
  */
 ?>
-<h1> Ingredients for {code}</h1>
+<h1> Ingredients for {name}</h1>
 
     {description}
     <br/>
@@ -32,7 +32,7 @@
         </tr>
     </form>
 </table>
-<button class="btn btn-active" onclick="location.href='{backUrl}'">Return</button>
+<button class="btn btn-active" onclick="location.href='{controller_url}'">Return</button>
 
 
 

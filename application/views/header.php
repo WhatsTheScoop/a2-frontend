@@ -41,7 +41,9 @@
                 <li>
                     <a href="/admin">Admin</a>
                 </li>
-                
+                <li>
+                    <a href="/toggle">Toggle Role</a>
+                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -52,11 +54,11 @@
 <!-- Header Carousel -->
 <header id="myCarousel" class="carousel slide">
     <!-- Wrapper for slides -->
-    <div class="carousel-inner">
-        <div class="item active">
+    <div class="carousel-inner" style="">
+        <div class="item active" >
             <div class="fill" style="background-image:url('http://del.h-cdn.co/assets/15/26/980x490/landscape-1435086195-ice-cream-cones-delish-9.JPG');"></div>
             <div class="carousel-caption">
-                <h2>Welcome</h2>
+                <h1>Assignment #2 From Comp 4711</h1>
             </div>
         </div>
     </div>

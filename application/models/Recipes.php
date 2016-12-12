@@ -1,46 +1,47 @@
 <?php
 
 /*
- * @author Spencer
- * */
+ * @author Jason Cheung 
+ */
 
 class Recipes extends MY_Model {
     
-	public static $fields =  ['id','code','description','ingredients'];
+    /* 
+    === BASE FORMAT ===
+    array(
+        'id' => int,
+        'code' => string,k 
+        'description' => string, 
+        'ingredients' => array(
+            array(
+                'item' => Ingredient, 
+                'quantity' => int 
+            ),
+            array(
+                'item' => Ingredient, 
+                'quantity' => int 
+            ),
+            ... 
+        )     
+    )
+
+    === NOTES ===
+    There are three different types of models to use:
+    1. Base : For general purpose handling by controllers and database. 
+    2. View : For displaying to index and details page. 
+    3. Form : For displaying by create and edit page, as well as processing input process in the controller.
+    
+    By default get does not load the ingredients, be sure to call getIngredients() if you require them. 
+    */
+
+	public static $fields =  ['id','code','description','ingredients'];    
 
     public static $rules = [
-        ['field'=>'id', 		'label'=>'Recipe ID',	'rules'=>'required|integer'],
+        ['field'=>'id', 		'label'=>'Recipe ID',	'rules'=>'integer'],
         ['field'=>'code', 		'label'=>'Name',		'rules'=>'required|alpha_numeric_spaces'],
-        ['field'=>'description','label'=>'description',	'rules'=>'required|alpha_numeric_spaces'],
+        ['field'=>'description','label'=>'description',	'rules'=>'required'],
         ['field'=>'ingredients','label'=>'ingredients', 'rules'=>'']
 	];
-
-    // public static $data = array(
-	// 	array('id' => '0',  'code' => 'Child Cone', 'description' => 'One small scoop of vanilla, perfect for a child!',  'ingredients' =>
-	// 		array('1' => 1, '3' => 1)),
-	// 	array('id' => '1',  'code' => 'Large Vanilla', 'description' => 'Two scoops of vanilla goodness.',  'ingredients' =>
-	// 		array('0'=> 1,'3'=> 2)),
-    //     array('id' => '2',  'code' => 'Small Chocolate', 'description' => 'One scoop of chocolate, just enough to make you want more!',  'ingredients' =>
-	// 		array('1'=> 1,'5'=> 1)),
-    //     array('id' => '3',  'code' => 'Large Chocolate', 'description' => 'Two scoops of chocolate, we won\'t tell if you don\'t!',  'ingredients' =>
-	// 		array('0'=> 1,'5'=> 2)),
-    //     array('id' => '4',  'code' => 'Chocolate Extreme', 'description' => 'Two scoops of chocolate, plus toppings, everyone loves chocolate!',  'ingredients' =>
-	// 		array('2'=> 1,'5'=> 2, '11'=>1)),
-    //     array('id' => '5',  'code' => 'Napolean', 'description' => 'One scoop of vanilla, chocolate, and strawberry!',  'ingredients' => 
-	// 		array('0'=> 1,'5'=> 1, '3' => 1, '4' => 1)),
-    //     array('id' => '6',  'code' => 'Feeling Nutty', 'description' => 'One scoop of maple, with lots of walnuts for a topping!',  'ingredients' => 
-	// 		array('0'=> 1,'7'=> 1,'10'=>1)),
-    //     array('id' => '7',  'code' => 'Minty Fresh', 'description' => 'One scoop of mint ice cream.',  'ingredients' => 
-	// 		array('1'=> 1,'6'=> 1)),
-    //     array('id' => '8',  'code' => 'Oh Canada', 'description' => 'Two scoops of maple ice cream.',  'ingredients' => 
-	// 		array('0'=> 1,'7'=> 2)),
-    //     array('id' => '9',  'code' => 'Attempted Rainbow', 'description' => 'One scoop of strawberry, orange, vanilla, and chocolate!',  'ingredients' => 
-	// 		array('2'=> 1,'3'=> 1, '4'=> 3, '8'=> 1, '5'=> 1,'9'=>1)),
-    //     array('id' => '10', 'code' => 'I can\'t Choose', 'description' => 'One scoop of each ice cream with all of the toppings!',  'ingredients' => 
-	// 		array('2'=> 1, '3'=> 1, '4'=> 3, '8'=> 1, '5'=> 1, '6'=> 1, '7'=> 1, '9'=>1, '10'=> 1, '11'=>1)),
-    //     array('id' => '11', 'code' => 'Forgetting Something', 'description' => 'Hmm is something missing?',  'ingredients' => 
-	// 		array('0'=> 1, '9'=>1, '10'=> 1, '11'=>1))
-	// );
 
     // Determines how a record should be displayed
     public static function createViewModel($record) {
@@ -56,6 +57,53 @@ class Recipes extends MY_Model {
         $record['code'] 		= ucwords($record['code']);
         $record['description']  = ucfirst($record['description']);
         $record['ingredients']  = $ingredients;
+
+        return $record;
+    }
+
+    // A model used for forms display and processing input from forms too. 
+    public static function createFormModel($record) {
+        // if clean record 
+        if (!isset($record['form_ingredients'])) {
+            $record['form_ingredients'] = array();
+        }
+        // if loading from existing record 
+        if (!empty($record['ingredients'])) {
+            foreach ($record['ingredients'] as $i) {
+                array_push($record['form_ingredients'], [
+                    'name' => $i['item']['name'],
+                    'quantity' => $i['quantity']
+                ]);
+            }
+        }
+        unset($record['ingredients']);
+
+        // if loading from form (assumes quantity is also set) 
+        if (!empty($record['ingredient_name']) && !empty($record['ingredient_quantity'])) {
+            $ingredientNames = $record['ingredient_name'];
+            $ingredientQuantities = $record['ingredient_quantity'];
+
+            // reformat ingredient input  
+            for ($i = 0; $i < count($ingredientNames); $i++) {
+                array_push($record['form_ingredients'], [
+                    'name' => $ingredientNames[$i], 
+                    'quantity' => $ingredientQuantities[$i]
+                ]);
+            }
+        }
+        unset($record['ingredient_name']);
+        unset($record['ingredient_quantity']);
+
+        if (!empty($record['form_inegredients'])) {
+            array_push($record['form_ingredients'], [
+                'name' => '', 
+                'quantity' => ''
+            ]);
+        }
+
+        $record['id']        	= $record['id'];
+        $record['code'] 		= $record['code'];
+        $record['description']  = $record['description'];
 
         return $record;
     }
@@ -79,6 +127,43 @@ class Recipes extends MY_Model {
         }
 
         return $ingredients;
+    }
+
+    function add($recipe) {
+        // store for ingredient association later 
+        $ingredients = $recipe['ingredients'];  
+        // Reformat recipe object for addition
+        unset($recipe['ingredients']);
+        $recipe['id'] = count($this->Recipe->all()) + 1; 
+
+        // add recipe 
+        parent::add($recipe);
+        // Add ingredient association 
+        foreach ($ingredients as $entry) {
+            $ingredient = $entry['item'];
+            $quantity = $entry['quantity'];
+            var_dump("INSERT INTO recipeingredients (recipeid, ingredientid, quantity) VALUES ('{$recipe['id']}', '{$ingredient['id']}', '{$quantity}')");
+            $this->db->query("INSERT INTO recipeingredients (recipeid, ingredientid, quantity) VALUES ('{$recipe['id']}', '{$ingredient['id']}', '{$quantity}')");
+        }
+    }
+
+    function update($recipe) {
+        // store for ingredient association later 
+        $ingredients = $recipe['ingredients'];  
+
+        // LMMFAO 
+        $this->db->delete("recipeingredients",  array("recipeid" => $recipe['id']));
+
+        // edit recipe 
+        unset($recipe['ingredients']);        
+        parent::update($recipe);
+
+        // edit ingredient association 
+        foreach ($ingredients as $entry) {
+            $ingredient = $entry['item'];
+            $quantity = $entry['quantity'];
+            $this->db->query("INSERT INTO recipeingredients (recipeid, ingredientid, quantity) VALUES ('{$recipe['id']}', '{$ingredient['id']}', '{$quantity}')");
+        }    
     }
 
 }

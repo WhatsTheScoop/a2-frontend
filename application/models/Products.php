@@ -68,7 +68,7 @@ class Products extends MY_Model {
             $ingredient = $entry['item'];
             $quantityRequired = $entry['quantity'];
 
-            if ($quantityRequired * $quantity > $this->Ingredient->getOnHand($ingredient['id'])) {
+            if ($quantityRequired * $quantity > $ingredient['onHand']) {
                 return "Not enough ingredients.";   // TODO: More sophisticated error message (requires getting the entire ingredient.)
             }
         }

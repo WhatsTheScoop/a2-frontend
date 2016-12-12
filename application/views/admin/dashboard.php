@@ -1,12 +1,13 @@
 <h1>{pagetitle}</h1>
+<h3>Transaction History</h3>
 <hr>
 <table class="table table-striped table-bordered" action="">
     <thead>    
         <!--<th>ID</th>-->
-        <th>Recipe ID</th>        
-        <th>Price</th>
-        <th>In Stock</th>
-        <th>On promotion</th>        
+        <th>id</th>        
+        <th>amount</th>
+        <th>description</th>
+        <th>date</th>        
         <!--<th></th>-->
     </thead>
     {transactions}
@@ -18,5 +19,5 @@
         </tr>
     {/transactions}
 </table>
-<button onclick="location.href='{base_url}'" class="btn btn-default">Return</button>
+<button onclick="location.href='{base_url}admin'" class="btn btn-default">Return</button>
 

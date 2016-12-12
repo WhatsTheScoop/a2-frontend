@@ -53,3 +53,6 @@ $route['default_controller'] = 'welcome';
 $route['home'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+$route['error/noaccess'] = function() {
+    $this->load->view('errors/html/error_general');
+};

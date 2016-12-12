@@ -14,13 +14,27 @@ class Admin extends Application {
         $this->data['pagebody'] = 'admin/index';
         $this->data['header'] = 'header';
         
-        //amount spent on all inventory to date
-        $this->data['inventorycost'] = "$".number_format(1000.00,2);
-        //net amount received from sales
-        $this->data['salesamount'] = "$".number_format(110.50,2);
-        //cost of ingredients consumed to date
-        $this->data['costofingredientsused'] = "$".number_format(210.21,2);
+        $amountSpent = 0.0;
+        $amountMade = 0.0;
+        $amountInInventory = 0.0;
+        $numberOfSales = 0;
+        foreach ($this->Transaction->all() as $t){
+            if($t['cost'] > 0){
+                $amountMade += $t['cost'];
+                $numberOfSales ++;
+            } else {
+                $amountSpent -= $t['cost'];
+            }
+        }
         
+        //amount spent on all inventory to date
+        $this->data['inventorycost'] = "$".number_format($amountSpent,2);
+        //net amount received from sales
+        $this->data['salesamount'] = "$".number_format($amountMade,2);
+        //cost of ingredients consumed to date
+        $this->data['netprofit'] = "$".number_format(($amountMade - $amountSpent),2);
+        //number of sales made to date
+        $this->data['numberofsales'] = ($numberOfSales);
         $this->data['pagebody'] = 'admin/index';
         $this->render();
     }
@@ -32,7 +46,7 @@ class Admin extends Application {
         $transactions = array();
         
         foreach ($this->Transaction->all() as $t){
-            array_push($transactions, Transactions::createViewModel($t));
+            array_push($transactions, $t);
         }
 
         $this->data['transactions'] = $transactions;
@@ -41,10 +55,10 @@ class Admin extends Application {
         $this->render();  
     }
 
-    public function transactions() {
-        $this->data['pagebody'] = 'admin/transactions';
-        $this->render();    
-    }
+//    public function transactions() {
+//        $this->data['pagebody'] = 'admin/transactions';
+//        $this->render();    
+//    }
 
 
 /*

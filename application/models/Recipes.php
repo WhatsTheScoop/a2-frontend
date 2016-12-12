@@ -4,36 +4,36 @@
  * @author Jason Cheung 
  */
 
+/* 
+=== BASE FORMAT ===
+array(
+    'id' => int,
+    'code' => string,k 
+    'description' => string, 
+    'ingredients' => array(
+        array(
+            'item' => Ingredient, 
+            'quantity' => int 
+        ),
+        array(
+            'item' => Ingredient, 
+            'quantity' => int 
+        ),
+        ... 
+    )     
+)
+
+=== NOTES ===
+There are three different types of models to use:
+1. Base : For general purpose handling by controllers and database. 
+2. View : For displaying to index and details page. 
+3. Form : For displaying by create and edit page, as well as processing input process in the controller.
+
+By default get does not load the ingredients, be sure to call getIngredients() if you require them. 
+*/
+
 class Recipes extends MY_Model {
     
-    /* 
-    === BASE FORMAT ===
-    array(
-        'id' => int,
-        'code' => string,k 
-        'description' => string, 
-        'ingredients' => array(
-            array(
-                'item' => Ingredient, 
-                'quantity' => int 
-            ),
-            array(
-                'item' => Ingredient, 
-                'quantity' => int 
-            ),
-            ... 
-        )     
-    )
-
-    === NOTES ===
-    There are three different types of models to use:
-    1. Base : For general purpose handling by controllers and database. 
-    2. View : For displaying to index and details page. 
-    3. Form : For displaying by create and edit page, as well as processing input process in the controller.
-    
-    By default get does not load the ingredients, be sure to call getIngredients() if you require them. 
-    */
-
 	public static $fields =  ['id','code','description','ingredients'];    
 
     public static $rules = [

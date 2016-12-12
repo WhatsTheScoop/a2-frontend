@@ -93,12 +93,14 @@ class Products extends MY_Model {
         }
         $this->update($product);
         
-        var_dump($product);
+        //var_dump($product);
         $name = $this->getRecipe($product)['code'];
         $data = 'SOLD: '.$quantity.' ' . $name .'(s) on ' . date("Y/m/d") . "\n";
 		if ( !file_put_contents(APPPATH.'models\LogFiles\salesReceipt.txt', $data, FILE_APPEND)){
 		     echo 'Unable to write the file';
 		}
+        $description = 'SOLD: '.$quantity.' ' . $name .'(s)';
+        $this->Transaction->add($description);
     }
 
 //// REMOVE 

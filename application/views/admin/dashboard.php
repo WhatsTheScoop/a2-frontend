@@ -3,10 +3,10 @@
 <table class="table table-striped table-bordered" action="">
     <thead>    
         <!--<th>ID</th>-->
-        <th>Recipe ID</th>        
-        <th>Price</th>
-        <th>In Stock</th>
-        <th>On promotion</th>        
+        <th>id</th>        
+        <th>amount</th>
+        <th>description</th>
+        <th>date</th>        
         <!--<th></th>-->
     </thead>
     {transactions}

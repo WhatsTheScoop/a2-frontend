@@ -23,7 +23,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Product <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Production <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="/production">Index</a>
@@ -44,8 +44,8 @@
                 <li>
                     <a href="/toggle">Toggle Role</a>
                 </li>
+                <p class="navbar-text navbar-right">Role: {userrole}</p>                
             </ul>
-            <p class="navbar-text navbar-right">Role: {userrole}</p>
         </div>
         <!-- /.navbar-collapse -->
     </div>

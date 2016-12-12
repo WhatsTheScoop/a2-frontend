@@ -9,6 +9,7 @@ class Production extends Application {
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->isUser();
     }
 
     public function index() {
@@ -77,15 +78,20 @@ class Production extends Application {
         // ... (NULL, TRUE) returns all POST items with XSS filter
         foreach ($this->input->post(NULL, TRUE) as $id => $quantity) {
             
+            if ($quantity == 0)
+                continue;
+
             $error = $this->Product->produce($id,$quantity);
             
+            $product = $this->Product->get($id);
+
             if ($error != null) {
-                // TODO: error handling 
-                var_dump("There wasn an error " . $error);
-                die();
+                $message = $message . " Error producing ID:" . $id . " - " . $error; 
+                unset($error);
+                continue;
             }
 
-            $message = $message . " " . $quantity . " Product(s) has been produced. <br>";
+            $message = $message . " Produced " . $quantity . " product(s) with ID: " . $id . " <br>";
         }
 
         $this->data['header'] = 'header';

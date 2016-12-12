@@ -46,15 +46,7 @@ class Admin extends Application {
         $this->render();    
     }
 
-    public function isAdmin(){
-        $userrole = $this->session->userdata('userrole');
-        if($userrole == 'admin'){
-            return true;
-        } else {
-            redirect(base_url());
-            return false;
-        }
-    }
+
 /*
     public function transaction($id) {
         $this->data['pagebody'] = 'admin/transaction';

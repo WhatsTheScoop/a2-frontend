@@ -254,12 +254,12 @@ DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `transactions` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `cost` decimal(5,2) NOT NULL,
   `productSold` varchar(256) NOT NULL,
   `date` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

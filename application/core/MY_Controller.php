@@ -58,7 +58,7 @@ class Application extends CI_Controller
         if($userrole == 'admin'){
             return true;
         } else {
-            redirect(base_url());
+            redirect(base_url() . "/errors/noaccess");
             return false;
         }
     }
@@ -68,7 +68,7 @@ class Application extends CI_Controller
         if($userrole == 'user' || $userrole == 'admin'){
             return true;
         } else {
-            redirect(base_url());
+            redirect(base_url() . "errors/noaccess");
             return false;
         }
 	}

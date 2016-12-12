@@ -91,7 +91,7 @@ class Products extends MY_Model {
         $name = $this->getRecipe($product)['code'];
         
         if ($product['inStock'] < 0) {
-            return "Error: You don't have enough " . $name . " in stock.";
+            return "You don't have enough " . $name . " in stock.";
         }
         $this->update($product);
         
@@ -105,33 +105,9 @@ class Products extends MY_Model {
         $this->Transaction->add($item);
     }
 
-//// REMOVE 
-    // Convenience method for adding to stock 
-    function addToStock($id, $quantity) {
-        $record = $this->get($id);
-        $record['inStock'] = $record['inStock'] + $quantity;
-        $this->update($record);
-    }
-
-    // Convenience method for removing from stock 
-    function removeFromStock($id, $quantity) {
-        $record = $this->get($id);
-        $record['inStock'] = $record['inStock'] - $quantity;
-
-        if ($record['inStock'] < 0)
-            return "There's not enough " . $record['name'] . "!";
-
-        $this->update($record);
-    }
-//// END REMOVE 
-
-/// SECTION: CRUD
-
     // Gets the associated recipe of a product
 	public function getRecipe($product) {
 		return $this->Recipe->get($product['recipeId']);
 	}
-
-/// end section: CRUD  
 
 }

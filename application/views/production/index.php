@@ -26,7 +26,7 @@
                 </tr>
                 {/products}
                  <tr>
-                    <td><button onclick="location.href='{base_url}'" class="btn btn-default">Return</button></td>
+                    <td><a href="{base_url}" class="btn btn-default">Return</a></td>
                     <td></td>
                     <td></td>
                     <td><input class="btn btn-primary" type="submit" value="Produce"><td>

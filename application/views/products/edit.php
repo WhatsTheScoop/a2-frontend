@@ -1,4 +1,4 @@
-<h1>{pagetitle}</h1>
+<h1 class="text-center">{pagetitle}</h1>
 <hr>
 
 {if errors}
@@ -6,49 +6,41 @@
 {/if}
 
 <form action="{model}{id}{/model}" method='POST'>
-    {model}
-    <div class="form-group row">
-        <div class="col-md-4">
-            <label for='id'>Product ID</label>
-            <input type="number" name="id" value="{id}" class="form-control" />
+    <div class="col-md-4 col-md-offset-4">
+        {model}
+        <div class="form-group row">
+                <label for='id'>Product ID</label>
+                <input type="number" name="id" value="{id}" class="form-control" />
         </div>
-    </div>
-
-    <div class="form-group row">
-        <div class="col-md-4">
-            <label for='recipeId'>Recipe ID</label>
-            <input type="number" name="recipeId" value="{recipeId}" class="form-control" />
+    
+        <div class="form-group row">
+                <label for='recipeId'>Recipe ID</label>
+                <input type="number" name="recipeId" value="{recipeId}" class="form-control" />
         </div>
-    </div>
-
-    <div class="form-group row">
-        <div class="col-md-4">
-            <label for='price'>Price</label>
-            <div class="input-group">
-                <span class="input-group-addon">$</span>
-                <input type="number" step="0.01" name="price" value="{price}" class="form-control" />
-            </div>
-        </div>        
-    </div>
-
-    <div class="form-group row">
-        <div class="col-md-4">
-            <label for='inStock'>Stock</label>
-            <input type="number" name="inStock" value="{inStock}" class="form-control" />
+    
+        <div class="form-group row">
+                <label for='price'>Price</label>
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input type="number" step="0.01" name="price" value="{price}" class="form-control" />
+                </div>
         </div>
-    </div>    
-
-    <div class="form-group row">
-        <div class="col-md-4">
-            <label for='promotion'>Promotion</label>
-            <input type="checkbox" name="promotion" value="{promotion}" class="form-check-input" />
+    
+        <div class="form-group row">
+                <label for='inStock'>Stock</label>
+                <input type="number" name="inStock" value="{inStock}" class="form-control" />
+        </div>    
+    
+        <div class="form-group row">
+                <label for='promotion'>Promotion</label>
+                <input type="checkbox" name="promotion" value="{promotion}" class="form-check-input" />
+        </div>    
+        {/model}
+    
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a href="{controller_url}" class="btn btn-default">Return</a>        
         </div>
-    </div>    
-    {/model}
-
-    <div>
-        <button type="submit" class="btn btn-primary">Update</button>
-        <a href="{controller_url}" class="btn btn-default">Return</a>        
     </div>
 
 </form>

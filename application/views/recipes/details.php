@@ -14,7 +14,11 @@
         <dd>{description}</dd>
 
         <dt>Ingredients</dt>
-        <dd>{ingredients}</dd>
+        <dd>
+        {ingredients}
+        {quantity} x {name} <br>
+        {/ingredients}
+        </dd>
     </dl> 
     {/model}       
     <div class="text-center">
@@ -22,4 +26,3 @@
         <a href="{controller_url}" class="btn btn-default">Return</a>     
     </div>
 </div>  
-   

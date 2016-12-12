@@ -23,9 +23,38 @@
   line-height: 1.33;
   border-radius: 35px;
 }
+
 dl dt {
   margin-bottom: 2px;
 }
 dl dd {
   margin-bottom: 2px;
+}
+
+.menuTable{
+  color: white;
+  width: 650%;
+	background-color: rgba(10,10,10,.65);
+  margin: auto;
+  border: double 10px palevioletred ;
+  padding: 12px;
+  border-radius: 3px;
+}
+.menuItem{
+  border: 3px solid turquoise;
+  font-family: "Georgia", serif;
+  font-size: 23px; 
+}
+.title{
+  font-family: "Georgia", serif;
+  font-size: 50px;
+  text-decoration: underline;
+}
+
+.order{
+  background-color: turquoise;
+  color: white;
+  font-family: "Georgia", serif;
+  font-size: 23px;
+  padding: 8px;
 }

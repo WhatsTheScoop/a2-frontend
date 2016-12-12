@@ -21,13 +21,16 @@ class Welcome extends Application
 	{
         $this->data['header'] = 'header';
         
-        //amount spent on all inventory to date
-        $this->data['inventorycost'] = "$".number_format(1000.00,2);
-        //net amount received from sales
-        $this->data['salesamount'] = "$".number_format(110.50,2);
-        //cost of ingredients consumed to date
-        $this->data['costofingredientsused'] = "$".number_format(210.21,2);
-        
+        // //amount spent on all inventory to date
+        // $this->data['inventorycost'] = "$".number_format(1000.00,2);
+        // //net amount received from sales
+        // $this->data['salesamount'] = "$".number_format(110.50,2);
+        // //cost of ingredients consumed to date
+        // $this->data['costofingredientsused'] = "$".number_format(210.21,2);
+		
+		//get all menu items
+		$this->data['recipes'] = $this->Recipe->all();
+		
         $this->data['pagebody'] = 'welcome_message';
         $this->render(); 
 	}

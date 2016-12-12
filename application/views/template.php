@@ -8,6 +8,7 @@
         <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/assets/css/modern-business.css"/>
         <link rel="stylesheet" type="text/css" href="/assets/css/app.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>        
 </head>
 <body>
         {header}   
@@ -15,7 +16,6 @@
                 {content}
         </div>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="/assets/js/bootstrap.min.js"></script>
 
 <footer class="container"></footer>

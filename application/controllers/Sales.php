@@ -20,20 +20,20 @@ class Sales extends Application {
         $this->data['pagebody'] = 'sales/index';
         
         // Load the data 
-        $this->load->model('product');
+        $this->load->model('products');
         $this->load->model('salesLog');
         //$this->salesLog->add('test');
-        $products = $this->product->all();
+        $products = $this->products->all();
 
         // Format the data 
         $productList = array();
         foreach($products as $p){
             $productList[] = array(
                 'id'          => $p['id'],
-                'name'        => $this->product->getRecipe($p)['code'],
-                'description' => $this->product->getRecipe($p)['description'],                
+                'name'        => $this->products->getRecipe($p)['code'],
+                'description' => $this->products->getRecipe($p)['description'],                
                 'price'       => "$".number_format($p['price'], 2),
-                'inStock'    => $p['inStock'],
+                'inStock'     => $p['inStock'],
                 'promotion'   => $p['promotion'] ? "Yes" : "No",    // TODO: Not sure if the presenting logic should be here.                
             );
         }
@@ -43,9 +43,9 @@ class Sales extends Application {
     }
     
     public function show($id = 0) {
-        $this->load->model('product');
-        $product = $this->product->get($id);
-        $recipe  = $this->product->getRecipe($product);
+        $this->load->model('products');
+        $product = $this->products->get($id);
+        $recipe  = $this->products->getRecipe($product);
 
         if (is_null($product))
             show_404();
@@ -67,19 +67,21 @@ class Sales extends Application {
 
     public function receipt()
     {
-        $this->load->model('product');
+        $this->load->model('products');
 
         $totalOrderCost = 0;
         $message = "";
-
+        //var_dump($this->input->post(NULL, TRUE));
         // ... (NULL, TRUE) returns all POST items with XSS filter
         foreach ($this->input->post(NULL, TRUE) as $id => $quantity) {
 
             if ($quantity == 0)
                 continue;
 
-            $product = $this->product->get($id);
-            $recipe  = $this->product->getRecipe($product);
+            $product = $this->products->get($id);
+            $recipe  = $this->products->getRecipe($product);
+            // var_dump($id);
+            $this->products->sell($product,$quantity);
 
             $productName = $recipe['code'];
             $cost = $quantity * $product['price'];

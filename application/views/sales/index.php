@@ -28,7 +28,7 @@
             <td></td>
             <td></td>
             <td></td>            
-            <td><input class="btn btn-primary" type="submit" value="Place Order"><td>
+            <td><input class="btn btn-primary" type="submit" value="Purchase"><td>
         </tr>
     </form>
 </table>

@@ -194,10 +194,10 @@ class MY_Model extends CI_Model implements Data_mapper {
 	function create()
 	{
 		$names = $this->db->list_fields($this->_tableName);
-		$object = new StdClass;
+		$record = array();
 		foreach ($names as $name)
-			$object->$name = "";
-		return $object;
+			$record[$name] = "";
+		return $record;
 	}
 
 	// Add a record to the DB

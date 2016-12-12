@@ -1,5 +1,6 @@
 <h1>{pagetitle}</h1>
-<button onclick="location.href='{base_url}/ingredients/create'" class="btn btn-primary">Create</button>
+<h3>You're viewing data from our warehouse</h3>
+<button onclick="location.href='http://a2backend.local'" class="btn btn-primary">Warehouse</button>
 <hr>
 <table class="table table-striped table-bordered" action="">
     <thead>    
@@ -14,7 +15,7 @@
     {models}
         <tr>
             <td>
-                <a href="ingredients/details/{id}">{id}</a>
+                <a href="/IngredientsController/details/{id}">{id}</a>
             </td>
             <td>{name}</td>
             <td>{price}</td>                
@@ -22,9 +23,7 @@
             <td>{perBox}</td>
             <td>{onHand}</td>            
             <td>
-                <a href="ingredients/details/{id}"><span class="glyphicon glyphicon-search"></span></button></a>
-                <a href="ingredients/edit/{id}"><span class="glyphicon glyphicon-edit"></span></a>
-                <a href="ingredients/delete/{id}"><span class="glyphicon glyphicon-trash"></span></a>         
+                <a href="/IngredientsController/details/{id}"><span class="glyphicon glyphicon-search"></span></button></a>
             </td>                
         </tr>
     {/models}

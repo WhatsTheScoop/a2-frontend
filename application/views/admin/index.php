@@ -13,10 +13,13 @@
             <td>{salesamount}</td>
         </tr>
         <tr>
-            <th>Cost of Sales Ingredients consumed</th>
-            <td>{costofingredientsused}</td>
+            <th>Net profit</th>
+            <td>{netprofit}</td>
         </tr>
-
+        <tr>
+            <th>Number of sales to date</th>
+            <td>{numberofsales}</td>
+        </tr>
     </form>
 </table>
     <br>

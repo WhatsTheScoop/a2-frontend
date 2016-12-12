@@ -17,9 +17,11 @@ class Admin extends Application {
         $amountSpent = 0.0;
         $amountMade = 0.0;
         $amountInInventory = 0.0;
+        $numberOfSales = 0;
         foreach ($this->Transaction->all() as $t){
             if($t['cost'] > 0){
                 $amountMade += $t['cost'];
+                $numberOfSales ++;
             } else {
                 $amountSpent -= $t['cost'];
             }
@@ -30,8 +32,9 @@ class Admin extends Application {
         //net amount received from sales
         $this->data['salesamount'] = "$".number_format($amountMade,2);
         //cost of ingredients consumed to date
-        $this->data['costofingredientsused'] = "$".number_format(210.21,2);
-        
+        $this->data['netprofit'] = "$".number_format(($amountMade - $amountSpent),2);
+        //number of sales made to date
+        $this->data['numberofsales'] = ($numberOfSales);
         $this->data['pagebody'] = 'admin/index';
         $this->render();
     }

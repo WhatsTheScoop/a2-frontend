@@ -261,6 +261,9 @@ CREATE TABLE `transactions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+INSERT INTO `transactions` (`cost`, `productSold`, `date`) VALUES
+('-200.00','default startup inventory costs (roughly?)','2016/12/11');
+
 --
 -- Dumping data for table `transactions`
 --

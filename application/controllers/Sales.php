@@ -86,8 +86,13 @@ class Sales extends Application {
             $product = $this->products->get($id);
             $recipe  = $this->products->getRecipe($product);
             // var_dump($id);
-            $this->products->sell($product,$quantity);
-
+            $error = $this->products->sell($product,$quantity);
+            if ($error != null) {
+                $message = $message . "Error selling $quantity of {$recipe['code']} - $error";
+                unset($error);
+                continue;
+            }
+            
             $productName = $recipe['code'];
             $cost = $quantity * $product['price'];
             $totalOrderCost = $totalOrderCost + $cost;

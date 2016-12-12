@@ -1,6 +1,6 @@
 <h1>{pagetitle}</h1>
 <h3>You're viewing data from our warehouse</h3>
-<button onclick="location.href='http://a2backend.local'" class="btn btn-primary">Warehouse</button>
+<button onclick="location.href='http://backend.local'" class="btn btn-primary">Warehouse</button>
 <hr>
 <table class="table table-striped table-bordered" action="">
     <thead>    
@@ -28,4 +28,4 @@
         </tr>
     {/models}
 </table>
-<button onclick="location.href='{base_url}'" class="btn btn-default">Return</button>
+<a href="/Admin" class="btn btn-default">Return</a>

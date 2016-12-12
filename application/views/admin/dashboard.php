@@ -1,4 +1,5 @@
 <h1>{pagetitle}</h1>
+<h3>Transaction History</h3>
 <hr>
 <table class="table table-striped table-bordered" action="">
     <thead>    

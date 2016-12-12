@@ -41,7 +41,9 @@
                 <li>
                     <a href="/admin">Admin</a>
                 </li>
-                
+                <li>
+                    <a href="/toggle">Toggle Role</a>
+                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->

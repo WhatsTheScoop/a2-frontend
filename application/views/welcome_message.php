@@ -1,19 +1,25 @@
 <div id="body" class="text-center">
-    <h1 class="title">Our Menu</h1>
+    <h1>Assignment #2 From Comp 4711</h1>
 
-    {recipes}
-    <table class="table menuTable ">
+    <table class="table">
+    <form action="">
         <tr>
-            <th class="text-center menuItem"> {code} </th>
+            <th>Amount spent purchasing inventory</th>
+            <td>{inventorycost}</td>
         </tr>
         <tr>
-           
-            <td>{description}</td>
+            <th>Amount received from sales</th>
+            <td>{salesamount}</td>
         </tr>
-    </table>
- {/recipes}
+        <tr>
+            <th>Cost of Sales Ingredients consumed</th>
+            <td>{costofingredientsused}</td>
+        </tr>
+
+    </form>
+</table>
     <br>
     
-    <a href="/sales" class="btn btn-default order"> CLICK HERE TO ORDER</a>
+        
 </div>
 
